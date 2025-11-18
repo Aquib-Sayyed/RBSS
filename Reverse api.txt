@@ -1,0 +1,495 @@
+using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using System.Data.SqlClient;
+using System.IO;
+//using System.Net;
+using System.Text;
+using System.Xml;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Reflection;
+using Newtonsoft.Json.Serialization;
+using System.Web.Script.Serialization;
+
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using System.Text.RegularExpressions;
+using System.Net;
+using System.Security.Authentication;
+using ServiceReference1;
+using ServiceReference2;
+
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using System.Data.SqlClient;
+using System.IO;
+using System.Text;
+using System.Xml;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Reflection;
+using Newtonsoft.Json.Serialization;
+using System.Web.Script.Serialization;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using System.Data.SqlClient;
+using System.IO;
+
+
+
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using System.Net;
+using System.Security.Authentication;
+using System.Security.Cryptography;
+
+
+public partial class Indiafirst : System.Web.UI.Page
+{
+    Contact obj;
+    Appointment obj_appointment;
+    Opportunity obj_opportunity;
+
+    String Client_ID, Siddhi_ID, Agent_id, Agent_Name,Disposition,Sub_Disposition,Remarks,Bocampaign;
+    DateTime call_date;    
+    String Appointment_Id;
+    String Opportunity_Id;
+    Connection conObj = new Connection();
+    string api_leadid, Appointment_Date_Time, CampaignID, CampaignSource, City, ContactableStatus, CustomerAddress, CustomerAddress1, CustomerAddress2,
+         CustomerAddressLandmark, State,
+        Pincode, FirstCallDateTime, LastCallDateTime, LastestCallersremarks, LeadInsertDatetime, LeadID, CustomerName, MainDisposition, MeetingNotification,
+    CustomerMobileNo, Notificationtimestamp, PFACode, PolicyNo, ProductPithced, CampaignSource1, CampaignSource2, SubDisposition, VerifiedCity,Occupation,payoutdate,
+    CampaignCode, Subcampaigncode, CampaignName, batch_name, maritialstatus, agentid, gender, Subcampaignname, Meet_type, AnnualIncome, campaign, sub_campaign,
+    crm_link, database, email, channel, clientid, clientsecret, accesstoken, authtoken, dtm2, agentname, best_disposition, best_sub_disposition, best_disposition_Remarks,
+    best_disposition_DateTime;
+    DateTime  dob;
+    int sms_count = 0;
+    int sms_month_count = 0;
+    int sms_NC_count = 0;
+
+
+    public string replaceSpecial(String str)
+    {
+        str = str.Replace(".", "");
+        return str;
+    }
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+        Client_ID = Request.QueryString[0];
+        Siddhi_ID = Request.QueryString[1];
+        Agent_id = Request.QueryString[2];
+        //Agent_Name = Request.QueryString[3];
+        Disposition = Request.QueryString[3];
+        Sub_Disposition = Request.QueryString[4];
+        Remarks = Request.QueryString[5];
+        best_disposition = Request.QueryString[6];
+        best_sub_disposition = Request.QueryString[7];
+        best_disposition_Remarks = Request.QueryString[8];
+        best_disposition_DateTime = Request.QueryString[9];
+        Bocampaign = Request.QueryString[10];
+
+
+
+        #region *****READ DATA FROM DB AGINST LEADID
+
+        try
+            {
+
+
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "usp_get_agent_name_CDP_reverse";
+
+                cmd.Parameters.AddWithValue("@p_agentid", Agent_id);
+
+                cmd.Connection = conObj.getConn();
+                cmd.Connection.Close();
+                cmd.Connection.Open();
+                cmd.ExecuteNonQuery();
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    if (dr.HasRows == true)
+                    {
+                        while (dr.Read())
+                        {
+                            agentname = dr["agent_name"].ToString();
+
+                        }
+                    }
+                }
+                cmd.Connection.Close();
+
+
+
+        #endregion
+
+        GetToken();
+        SEND_SMS();
+
+}
+
+  catch
+            {
+
+              
+            }
+
+    }
+
+
+    public void GetToken()
+    {
+
+
+        //string url = "https://devintegrationapi.tataaia.com/api/auth/signin/partner"; //UAT
+        string url = "https://siddhi-insurance.tataaia.com/api/auth/signin/partner"; 
+
+        
+        string stringResult= "";
+        
+        const SslProtocols _Tls12 = (SslProtocols)0x00000C00;
+        const SecurityProtocolType Tls12 = (SecurityProtocolType)_Tls12;
+        ServicePointManager.SecurityProtocol = Tls12;
+
+
+
+        //String plaintxt = @"{";
+
+        //clientid = "3a6596dd-dcca-4d6f-97f7-c2d0d5a6efbb";//UAT
+        //clientsecret = "t2LnaMzlMlfKYyjrF4RyZgtkn-91i5m32VwuZZMM-w3q_joV";//UAT
+
+
+        clientid = "38a6faef-5f2e-4bd3-8da6-707a295576e8";
+        clientsecret = "tdAGlPMSuRgvI76aBbr3Tw29rvX7s6ObOUDYB3Nka1H2DcNp";
+
+
+
+
+        //plaintxt += @"""clientId"":""" + clientid + @""",";
+        //plaintxt += @"""clientSecret"":""" + clientsecret + @"""";
+        //plaintxt += @"}";
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.Append("{");
+
+
+        sb.AppendFormat("\"clientId\": \"{0}\"", clientid);
+        sb.AppendFormat("\"clientSecret\": \"{0}\"", clientsecret);
+        sb.Append("}");
+
+        String plaintxt = sb.ToString();
+
+        System.Net.WebRequest req = System.Net.WebRequest.Create(url);
+        req.Method = "POST";
+        req.ContentType = "application/json; charset=utf-8";
+
+        req.Headers.Add("x-api-key", "td1WFKxvCV6kGUiWIXSJj6BKva1W1PXyaQhjDLf3");
+
+
+        byte[] bytes = System.Text.Encoding.ASCII.GetBytes(plaintxt);        
+        req.ContentLength = bytes.Length;
+        System.IO.Stream os = req.GetRequestStream();
+        os.Write(bytes, 0, bytes.Length);
+        os.Close();
+        System.Net.WebResponse resp = req.GetResponse();
+        System.IO.StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
+        stringResult = sr.ReadToEnd().Trim();
+
+
+
+        dynamic deserialize = JsonConvert.DeserializeObject(stringResult);
+
+        accesstoken = Convert.ToString(deserialize["accessToken"]);
+
+
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandType = CommandType.StoredProcedure;
+        cmd.CommandText = "USP_siddhi_reverse_token_save_Live";
+        cmd.Parameters.AddWithValue("@Token", accesstoken);
+        cmd.Parameters.AddWithValue("@Response", stringResult);        
+        cmd.Connection = conObj.getConn();
+        cmd.Connection.Close();
+        cmd.Connection.Open();
+        cmd.ExecuteNonQuery();
+        cmd.Connection.Close();
+        sr.Close();
+
+    }
+
+    public void SEND_SMS()
+    {
+        DateTime cc_date = DateTime.Now;
+
+        CryptLib _crypt = new CryptLib();
+
+
+        #region ********* API CALL
+
+	
+
+
+        try
+        {
+
+
+            //string url = "https://devintegrationapi.tataaia.com/api/agent/lead/update?callCenter=RBSS&leadId="+ Siddhi_ID +"";//UAT     
+            string url = "https://siddhi-insurance.tataaia.com/api/agent/lead/update?callCenter=RBSS-DSF&leadId="+ Siddhi_ID + "";
+
+
+            string stringResult = "";
+                        
+            string Client = "tata_aia";
+            dtm2 = dob.ToString("yyyy-MM-dd");
+                       
+	  
+            string Auth_Key = accesstoken;
+
+            const SslProtocols _Tls12 = (SslProtocols)0x00000C00;
+
+            const SecurityProtocolType Tls12 = (SecurityProtocolType)_Tls12;
+            ServicePointManager.SecurityProtocol = Tls12;
+
+            String plaintxtt = @"{";
+            plaintxtt += @"""lead"": { ";
+
+            plaintxtt += @"""channel"": ""WEBSALES"",";
+            plaintxtt += @"""additionalInfo"": { ";
+            plaintxtt += @"""teleSalesAgentName"": """ + agentname + @""",";
+            plaintxtt += @"""teleSalesAgentId"": """ + Agent_id + @""",";
+            plaintxtt += @"""disposition"": """ + Disposition + @""",";
+           // plaintxtt += @"""disposition"": ""DSF-Non Serviceable Lead"",";
+            plaintxtt += @"""subDisposition"": """ + Sub_Disposition + @""",";
+           // plaintxtt += @"""subDisposition"": ""Assigned To Bo Term"",";
+            plaintxtt += @"""dispositionRemark"": """ + Remarks + @""",";
+            plaintxtt += @"""dispositionDate"": """ + cc_date + @""",";
+            plaintxtt += @"""cc_best_disposition"": """ + best_disposition + @""",";
+            plaintxtt += @"""cc_best_sub_disposition"": """ + best_sub_disposition + @""",";
+            plaintxtt += @"""cc_best_disposition_Remarks"": """ + best_disposition_Remarks + @""",";
+            plaintxtt += @"""cc_best_disposition_DateTime"": """ + best_disposition_DateTime + @"""";
+
+
+            plaintxtt += @"}";
+            plaintxtt += @"}";
+            plaintxtt += @"}";
+
+            var json = new JavaScriptSerializer().Serialize(plaintxtt);
+
+             String iv = "a715fed0af06cce82dcc1e69fc832cfe";
+             string key = "TATAAIAVYMORBSSCRM==";
+             String cypherText = _crypt.encrypt(json, key, iv);
+            
+
+
+                string jsonString = @"{";
+                jsonString   += @"""payload"":""" + cypherText.ToString() + @"""";
+                jsonString += @"}";
+           
+            System.Net.WebRequest req = System.Net.WebRequest.Create(url);
+        
+
+            req.Headers.Add("Client", "tata_aia");
+          
+	    req.Headers.Add("Authorization", "Bearer " + accesstoken);
+            req.ContentType = "application/json; charset=utf-8";
+
+            req.Method = "POST";
+            byte[] bytes = System.Text.Encoding.ASCII.GetBytes(jsonString);
+            req.ContentLength = bytes.Length;
+            System.IO.Stream os = req.GetRequestStream();
+            os.Write(bytes, 0, bytes.Length);
+            os.Close();
+            System.Net.WebResponse resp = req.GetResponse();
+            System.IO.StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
+            stringResult = sr.ReadToEnd().Trim();
+
+            dynamic deserialize = JsonConvert.DeserializeObject(stringResult);
+
+            string id = Convert.ToString(deserialize["_id"]);            
+            string ts = Convert.ToString(deserialize["_ts"]);            
+            string leadId = Convert.ToString(deserialize["leadId"]);
+            string status = Convert.ToString(deserialize["status"]);
+            string Message = Convert.ToString(deserialize["message"]);          
+            string type = Convert.ToString(deserialize["_type"]);
+            string corrId = Convert.ToString(deserialize["code"]);            
+
+
+
+        #endregion
+
+            #region *********SAVE RESPONSE
+
+
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.CommandText = "usp_siddhi_reverse_disposition_live_new";
+            cmd.Parameters.AddWithValue("@LEAD_ID", Client_ID);
+            cmd.Parameters.AddWithValue("@p_siddhi_lead_id", Siddhi_ID);
+            cmd.Parameters.AddWithValue("@p_json_Request", jsonString);
+            cmd.Parameters.AddWithValue("@p_agent_id", agentid);
+            cmd.Parameters.AddWithValue("@p_agent_name", agentname);
+            cmd.Parameters.AddWithValue("@p_disposition", Subcampaigncode);
+            cmd.Parameters.AddWithValue("@p_Sub_disposition", CampaignCode);
+            cmd.Parameters.AddWithValue("@p_remarks", id);
+            cmd.Parameters.AddWithValue("@p_campaign", campaign);
+            cmd.Parameters.AddWithValue("@p_json", ts);
+            cmd.Parameters.AddWithValue("@p_Encrypted_json", Message);
+            cmd.Parameters.AddWithValue("@p_response", leadId);
+            cmd.Parameters.AddWithValue("@p_ts", status);
+            cmd.Parameters.AddWithValue("@p_siddhi_lead_response", leadId);
+            cmd.Parameters.AddWithValue("@p_status", status);
+            cmd.Parameters.AddWithValue("@p_message", Message);
+            cmd.Parameters.AddWithValue("@p_type", type);
+            cmd.Parameters.AddWithValue("@p_code", corrId);
+            cmd.Parameters.AddWithValue("@p_decryptedjson", plaintxtt);
+            
+
+            cmd.Connection = conObj.getConn();
+            cmd.Connection.Close();
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            cmd.Connection.Close();
+            // Response.Write(stringResult);
+            sr.Close();
+
+            #endregion
+
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+
+
+    }
+
+
+    public class CryptLib
+    {
+        UTF8Encoding _enc;
+        RijndaelManaged _rcipher;
+        byte[] _key, _pwd, _ivBytes, _iv;
+
+        private enum EncryptMode { ENCRYPT, DECRYPT };
+
+
+
+
+
+        public CryptLib()
+        {
+            _enc = new UTF8Encoding();
+            _rcipher = new RijndaelManaged();
+            _rcipher.Mode = CipherMode.CBC;
+            _rcipher.Padding = PaddingMode.PKCS7;
+            _rcipher.KeySize = 256;
+            _rcipher.BlockSize = 128;
+            _key = new byte[32];
+            _iv = new byte[_rcipher.BlockSize / 8];
+            _ivBytes = new byte[16];
+        }
+
+
+        private String encryptDecrypt(string _inputText, string _encryptionKey, EncryptMode _mode, string _initVector)
+        {
+
+            string _out = "";
+
+            _pwd = Encoding.UTF8.GetBytes(_encryptionKey);
+            _ivBytes = Encoding.UTF8.GetBytes(_initVector);
+
+            int len = _pwd.Length;
+            if (len > _key.Length)
+            {
+                len = _key.Length;
+            }
+            int ivLenth = _ivBytes.Length;
+            if (ivLenth > _iv.Length)
+            {
+                ivLenth = _iv.Length;
+            }
+
+            Array.Copy(_pwd, _key, len);
+            Array.Copy(_ivBytes, _iv, ivLenth);
+            _rcipher.Key = _key;
+            _rcipher.IV = _iv;
+
+            if (_mode.Equals(EncryptMode.ENCRYPT))
+            {
+                byte[] plainText = _rcipher.CreateEncryptor().TransformFinalBlock(_enc.GetBytes(_inputText), 0, _inputText.Length);
+                _out = Convert.ToBase64String(plainText);
+            }
+            if (_mode.Equals(EncryptMode.DECRYPT))
+            {
+                byte[] plainText = _rcipher.CreateDecryptor().TransformFinalBlock(Convert.FromBase64String(_inputText), 0, Convert.FromBase64String(_inputText).Length);
+                _out = _enc.GetString(plainText);
+            }
+            _rcipher.Dispose();
+            return _out;
+        }
+
+
+        public string encrypt(string _plainText, string _key, string _initVector)
+        {
+            return encryptDecrypt(_plainText, _key, EncryptMode.ENCRYPT, _initVector);
+        }
+
+
+        public string decrypt(string _encryptedText, string _key, string _initVector)
+        {
+            return encryptDecrypt(_encryptedText, _key, EncryptMode.DECRYPT, _initVector);
+        }
+    }
+
+    public class Json_Res
+    {
+        public response response;
+    }
+
+
+    public class response
+    {
+        public data data;
+        public string responseCode;
+    }
+
+    public class data
+    {
+        public string opportunityId;
+        public string interactionId;
+        public string contactid;
+        public string appointmentId;
+        public string errorMessage;
+    }
+
+
+
+}
