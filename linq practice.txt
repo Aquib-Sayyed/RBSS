@@ -1,0 +1,87 @@
+using System;
+using System.Diagnostics.Metrics;
+using System.Security.Cryptography;
+
+namespace DelegatePractical
+{
+
+    public class Order { 
+    
+        public int OrderID { get; set; }
+        public int Amount { get; set; }
+        public string status { get; set; }
+
+
+    }
+  
+
+
+   public class Program 
+    {
+        
+        static void Main(string[] args)
+        {
+
+            var orders = new List<Order>
+            {
+
+                new Order{OrderID =1, Amount=500, status="Completed"},
+                new Order{OrderID=2, Amount=1500, status="Completed1"},
+                new Order{OrderID=3, Amount=2000, status="Completed2"},
+
+            };
+
+
+            var HighValuesOrder = orders.Where(o=>o.Amount>1000);
+
+            foreach (var order in orders)
+            {
+
+                Console.WriteLine($"Order ID {order.OrderID}, Amount: {order.Amount}");
+
+            }
+
+            Console.WriteLine("--------------------------------------------------------");
+
+
+            var CompletedOrder = orders.Where(o=>o.status=="completed");
+
+            foreach (var cc in CompletedOrder)
+            {
+                Console.WriteLine($"{cc.OrderID} this is order");
+            }
+
+
+            var TotalAmount = orders.Sum(o=>o.Amount);
+
+            Console.WriteLine($"{TotalAmount} this is Amount");
+
+            var grouped = orders.GroupBy(o=>o.status);
+
+            Console.WriteLine("4) Groupde by status");
+
+            foreach (var group in grouped) {
+
+                Console.WriteLine($"status {group.Key}");
+
+
+
+            }
+
+            var ordered = orders.OrderByDescending(o => o.Amount);
+
+            Console.WriteLine("Ascending order ");
+
+            foreach (var gp in ordered) {
+
+                Console.WriteLine($"Order id {gp.OrderID} Amount {gp.Amount} ");
+
+            }
+
+            Console.WriteLine("-----------------------------------------------");
+        }
+
+        
+
+    }
+}
