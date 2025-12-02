@@ -1,0 +1,3393 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AMBIT_CRM.aspx.cs"
+    Inherits="SAVEX_OUTBOND" EnableEventValidation="false" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<script type="text/javascript">
+    function tbLimit() {
+        var tbObj = event.srcElement;
+        if (tbObj.value.length == tbObj.maxLength * 1) return false;
+    }
+    function tbCount(visCnt) {
+        var tbObj = event.srcElement;
+        if (tbObj.value.length > tbObj.maxLength * 1) tbObj.value = tbObj.value.substring(0, tbObj.maxLength * 1);
+        if (visCnt) visCnt.innerText = tbObj.maxLength - tbObj.value.length;
+    }
+</script>
+    <script language="JavaScript">
+        this.history.forward(-1);
+    </script>
+    <title></title>
+    <style type="text/css">
+        .nav-justified
+        {
+            width: 1075px; /*bgcolor="#b02a30" width="400px" style="color: White;"*/
+            background: #FFFFFF; /*#053c6d*/
+            color: Black;
+            font-size: small;
+            font-family: Calibri,Helvetica,sans-serif;
+        }
+        .boxes
+        {
+        }
+        .nowrap
+        {
+        }
+        .pageView
+        {
+            /*background-image: url(Images/1.jpg);*/ /*height: 750px;*/
+            display: block;
+            height: auto;
+            width: 72%;
+        }
+        .pageView1
+        {
+            background-image: url(Images/image11.jpg);
+            height: 750px;
+            display: block;
+            height: auto;
+        }
+        
+        .select-style
+        {
+            border: 1px solid #ccc;
+            width: 136px;
+            border-radius: 3px;
+            overflow: hidden;
+            background: #fafafa url("img/icon-select.png") no-repeat 90% 50%;
+        }
+        
+        .select-style select
+        {
+            padding: 5px 8px;
+            width: 130%;
+            border: none;
+            box-shadow: none;
+            background: transparent;
+            background-image: none;
+            -webkit-appearance: none;
+        }
+        
+        .select-style select:focus
+        {
+            outline: none;
+        }
+        
+        body
+        {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        /* Full-width input fields */
+        input[type=text], input[type=password]
+        {
+            /*padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;*/ /*padding: 4px 1px;
+            margin: 0px 0;
+            display: inline-block;
+            border: 1px solid #ccc;*/
+            padding: 0px 0px 0px 0px;
+            margin: 0px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            height: 18px;
+            width: 156px;
+        }
+        /* Set a style for all buttons */
+        button
+        {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        .textInput
+        {
+            font-family: verdana, arial, snas-serif;
+            font-size: 11px;
+            color: #000000;
+            padding: 3px;
+            background: #ccc; /*border-left: solid 1px #c1c1c1;
+            border-top: solid 1px #cfcfcf;
+            border-right: solid 1px #cfcfcf;
+            border-bottom: solid 1px #6f6f6f;*/
+            border-radius: 5px;
+            height: 30px;
+            width: 130px;
+        }
+        /*button:hover
+        {
+            opacity: 0.8;
+        } */
+        /* Extra styles for the cancel button */
+        .cancelbtn
+        {
+            width: auto;
+            padding: 10px 18px;
+            background-color: #f44336;
+        }
+        /* Center the image and position the close button */
+        .imgcontainer
+        {
+            text-align: center;
+            margin: 24px 0 12px 0;
+            position: relative;
+        }
+        img.avatar
+        {
+            width: 40%;
+        }
+        .container
+        {
+            padding: 16px;
+        }
+        span.psw
+        {
+            float: right;
+            padding-top: 16px;
+        }
+        /* The Modal (background) */
+        .modal
+        {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */ /*background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            padding-top: 60px;
+        }
+        /* Modal Content/Box */
+        .modal-content
+        {
+            background-color: #fefefe;
+            margin: 2% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */ /*border: 1px solid #888;*/
+            width: 100%; /* Could be more or less, depending on screen size */
+        }
+        /* The Close Button (x) */
+        .close
+        {
+            position: absolute;
+            right: 25px;
+            top: 0;
+            color: #000;
+            font-size: 35px;
+            font-weight: bold;
+        }
+        .close:hover, .close:focus
+        {
+            color: red;
+            cursor: pointer;
+        }
+        /* Add Zoom Animation */
+        /* Change styles for span and cancel button on extra small screens */
+        @media screen and (max-width: 300px)
+        {
+            span.psw
+            {
+                display: block;
+                float: none;
+            }
+            .cancelbtn
+            {
+                width: 100%;
+            }
+        }
+                
+        .label
+        {
+            color: white;
+            padding: 8px;
+            font-family: Arial;
+        }
+        .success
+        {
+            background-color: #4CAF50;
+        }
+        /* Green */
+        .info
+        {
+            background-color: #2196F3;
+        }
+        /* Blue */
+        .warning
+        {
+            background-color: #ff9800;
+        }
+        /* Orange */
+        .danger
+        {
+            background-color: #f44336;
+        }
+        /* Red */
+        .other
+        {
+            background-color: #e7e7e7;
+            color: black;
+        }
+        /* Gray */
+        
+        .dvContent
+        {
+            width: 1043px;
+            height: 300px;
+            background-color: gray;
+            overflow: scroll;
+        }
+        /***************************************** GridView ***********************************************/
+        
+        .mydatagridDetails
+        {
+            width: 100%;
+            border: solid 2px black;
+            min-width: 80%;
+            font-size: medium;
+            font-weight: bold;
+        }
+        
+        .mydatagrid
+        {
+            width: 100%;
+            border: solid 2px black;
+            min-width: 100%;
+        }
+        .header
+        {
+            background-color: #44619d;
+            font-family: Arial;
+            color: White;
+            border: none 0px transparent;
+            height: 25px;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        .rows
+        {
+            background-color: #fff;
+            font-family: Arial;
+            font-size: 14px;
+            color: #000;
+            min-height: 25px;
+            text-align: left;
+            border: none 0px transparent;
+        }
+        .rows:hover
+        {
+            background-color: #44619d;
+            font-family: Arial;
+            color: #fff;
+            text-align: left;
+        }
+        .selectedrow
+        {
+            background-color: #44619d;
+            font-family: Arial;
+            color: #fff;
+            font-weight: bold;
+            text-align: left;
+        }
+        .mydatagrid a /** FOR THE PAGING ICONS  **/
+        {
+            background-color: Transparent;
+            padding: 5px 5px 5px 5px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .mydatagrid a:hover /** FOR THE PAGING ICONS  HOVER STYLES**/
+        {
+            background-color: #000;
+            color: #fff;
+        }
+        .mydatagrid span /** FOR THE PAGING ICONS CURRENT PAGE INDICATOR **/
+        {
+            background-color: #c9c9c9;
+            color: #000;
+            padding: 5px 5px 5px 5px;
+        }
+        .pager
+        {
+            background-color: #646464;
+            font-family: Arial;
+            color: White;
+            height: 30px;
+            text-align: left;
+        }
+        
+        .mydatagrid td
+        {
+            padding: 5px;
+        }
+        .mydatagrid th
+        {
+            padding: 5px;
+        }
+        
+        .Scrollgrid
+        {
+            overflow: auto;
+            border-left: #000000 1px;
+            width: 100%;
+            border-bottom: #000000 1px;
+            height: 258px;
+        }
+        /***************************************** GridView ***********************************************/
+        
+        .span-b
+        {
+            display: inline-block; /*width: 78%;*/
+            height: auto;
+            padding: 5px;
+            border: 1px solid blue; /*background-color: #001628;*/
+            background-color: #5DABD3;
+        }
+        
+        
+        
+        .btn
+        {
+            /*position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);*/
+            -ms-transform: translate(-50%, -50%);
+            background-color: #f1f1f1;
+            color: black;
+            font-size: 14px;
+            padding: 16px 30px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .btnDial
+        {
+            /*position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);*/
+            -ms-transform: translate(-50%, -50%);
+            background-color: #f1f1f1;
+            color: black;
+            font-size: 12px;
+            padding: 5px 14px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .btn:hover
+        {
+            background-color: #5DABD3;
+            color: white;
+        }
+        .btnDial:hover
+        {
+            background-color: #5DABD3;
+            color: white;
+        }
+        
+        #container
+        {
+            display: flex; /* establish flex container */
+            flex-direction: row; /* default value; can be omitted */
+            flex-wrap: nowrap; /* default value; can be omitted */
+            justify-content: space-between; /* switched from default (flex-start, see below) */ /*background-color: lightyellow;*/
+        }
+        #container > div
+        {
+            width: 295px;
+            height: 200px; /*border: 2px dashed red;*/
+            border: 1px groove black;
+        }
+        #container1
+        {
+            display: flex; /* establish flex container */
+            flex-direction: row; /* default value; can be omitted */
+            flex-wrap: nowrap; /* default value; can be omitted */
+            justify-content: space-between; /* switched from default (flex-start, see below) */ /*background-color: lightyellow;*/
+        }
+        #container1 > div
+        {
+            width: 295px;
+            height: 200px; /*border: 2px dashed red;*/
+            border: 1px groove black;
+        }
+        
+        #container2
+        {
+            display: flex; /* establish flex container */
+            flex-direction: row; /* default value; can be omitted */
+            flex-wrap: nowrap; /* default value; can be omitted */
+            justify-content: space-between; /* switched from default (flex-start, see below) */ /*background-color: lightyellow;*/
+        }
+        #container2 > div
+        {
+            width: 295px;
+            height: 219px; /*border: 2px dashed red;*/
+            border: 1px groove black;
+        }
+        #container3
+        {
+            display: flex; /* establish flex container */
+            flex-direction: row; /* default value; can be omitted */
+            flex-wrap: nowrap; /* default value; can be omitted */
+            justify-content: space-between; /* switched from default (flex-start, see below) */ /*background-color: lightyellow;*/
+        }
+        #container3 > div
+        {
+            width: 907px;
+            height: 84px; /*border: 2px dashed red;*/
+            border: 1px groove black;
+        }
+        #container4
+        {
+            display: flex; /* establish flex container */
+            flex-direction: row; /* default value; can be omitted */
+            flex-wrap: nowrap; /* default value; can be omitted */
+            justify-content: space-between; /* switched from default (flex-start, see below) */ /*background-color: lightyellow;*/
+        }
+        #container4 > div
+        {
+            width: 288px;
+            height: 245px; /*border: 2px dashed red;*/
+            border: 1px groove black;
+        }
+        
+            #ac-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,.6);
+            z-index: 1001;
+        }
+
+        #popup {
+            width: 544px;
+            height: 375px;
+            background: #FFFFFF;
+            border: 10px solid #000;
+            border-radius: 50px;
+            -moz-border-radius: 25px;
+            -webkit-border-radius: 25px;
+            box-shadow: #64686e 0px 0px 3px 3px;
+            -moz-box-shadow: #64686e 0px 0px 3px 3px;
+            -webkit-box-shadow: #64686e 0px 0px 3px 3px;
+            position: relative;
+            top: 300px; left: 375px;
+        }
+        
+        
+        input.largerCheckbox { 
+            width: 400px; 
+            height: 400px; 
+            transform : scale(10); 
+        } 
+        .style9
+        {
+            width: 66px;
+        }
+        .style10
+        {
+            width: 77px;
+        }
+        .style12
+        {
+            width: 340px;
+        }
+        .style13
+        {
+            width: 754px;
+        }
+    </style>
+</head>
+<body oncontextmenu="return false">
+    <form id="form1" runat="server" class="modal-content animate">
+    <script language="javascript" type="text/javascript">
+
+
+    document.onmousedown=disableclick;
+status="Right Click Disabled";
+function disableclick(event)
+{
+  if(event.button==2)
+   {
+     alert(status);
+     return false;    
+   }
+}
+        function selectTab() {
+
+            var tabstrip = $find('<%= RadTabStrip1.ClientID %>');
+            tabstrip.get_tabs().getTab("3").click();
+        }
+        function isNumber(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        }
+        function PopUp() {
+            document.getElementById('ac-wrapper').style.display = "none";
+        }
+    </script>
+    <%-- <script>
+        function OpenInNewTab(url) {
+            var win = window.open(TestURLOnBrowser, 'Win 1',
+            'width=600, height=600, top=70, left=100, resizable=1, menubar=yes', true);
+            win.focus();
+        }
+
+
+  
+</script> --%>
+    <script>
+
+
+        function newWindow() {
+
+            //document.getElementById("TestURLOnBrowser")
+            var url = document.getElementById("txtTestURLOnBrowser").value;
+            var win = window.open(url, 'Open Multiple Popup Windows', 'width=auto,height=auto,top=auto,left=auto,resizable=1,menubar=yes,scrollbars=1', true); win.focus();
+        }
+      
+    </script>
+    <%--<script type="text/javascript">
+
+        function OnClientClicked(sender, args) {
+            alert('ss');
+
+            var window = $find('<%=UserListDialog.ClientID %>');
+
+            window.close();
+
+        }
+
+    </script>--%>
+    <div style="margin-left: 2px">
+        <cc1:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" EnablePageMethods="true">
+            <Services>
+                <asp:ServiceReference Path="~/Services/CtiWS.asmx" />
+            </Services>
+        </cc1:ToolkitScriptManager>
+        <telerik:RadTabStrip runat="server" ID="RadTabStrip1" SelectedIndex="1" MultiPageID="RadMultiPage1"
+            Style="margin-bottom: 0" >
+            <Tabs>
+                <telerik:RadTab Text="Customer Details" meta:resourcekey="RadTabStrip1" PageViewID="CustomerDetails"
+                    Enabled="true" Selected="true">
+                </telerik:RadTab>
+               <%-- <telerik:RadTab Text="Loyalty Policy Details" meta:resourcekey="RadTabStrip1" PageViewID="LoyalityPolicyDetails"
+                    Enabled="true">
+                </telerik:RadTab>--%>
+				 <telerik:RadTab Text="Knowledge Bank" meta:resourcekey="RadTabStrip1" PageViewID="KB"
+                    Enabled="true" >
+                </telerik:RadTab>
+                
+            </Tabs>
+        </telerik:RadTabStrip>
+        <telerik:RadMultiPage ID="RadMultiPage1" runat="server" SelectedIndex="0" EnableEmbeddedScripts="true"
+            Font-Names="Times New Roman">
+            <telerik:RadPageView ID="CustomerDetails" runat="server" CssClass="pageView">
+                <fieldset style="width: 896px;">
+                    <legend>
+                        <%--<div style="font-size: 18px; font-family: 'Book Antiqua'; font-weight: bold; color: #1a4c78;">
+                                </div>--%>
+                        Call Details: </legend>
+                    <table class="nav-justified">
+                        <caption>
+                            <div>
+                                <table style="background-color: Gray;">
+                                    <tr>
+                                        <td>
+                                            
+                                            <asp:Label ID="Label30" runat="server" class="label" Text="Lead ID:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                            <asp:TextBox ID="txtlead_idA" Enabled="true" Width="100px" CssClass="textInput"
+                                                runat="server">
+                                            </asp:TextBox>
+                                            <asp:HiddenField runat="server" ID="hfvtxtlead_idA" />
+                                        </td>
+                                        <td>
+                                            
+                                            <asp:Label ID="Label31" runat="server" class="label" Text="Mobile No.:" ForeColor="Black"
+                                        Font-Bold="True"  width="80px"></asp:Label>
+                                            <asp:TextBox ID="txtphoneP" runat="server" Visible="false" Width="100px" Enabled="false"
+                                                CssClass="textInput"></asp:TextBox>
+                                            <asp:TextBox ID="txtphonePMasking" runat="server" Width="100px" Enabled="false" CssClass="textInput"></asp:TextBox>
+                                        </td>
+                                        <td style="padding-top: 12px;">
+                                            <asp:UpdatePanel ID="updatepnl" runat="server">
+                                                <ContentTemplate>
+                                                    <asp:Button ID="DialP" runat="server" OnClick="DialP_Click" Text="Dial" CssClass="btn" />
+                                                </ContentTemplate>
+                                            </asp:UpdatePanel>
+                                        </td>
+                                        <td style="padding-top: 12px;">
+                                            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                                <ContentTemplate>
+                                                    <asp:Button ID="HangUpP" runat="server" Visible="false" Text="HangUp" OnClick="HangUpP_Click" CssClass="btn" />
+                                                </ContentTemplate>
+                                            </asp:UpdatePanel>
+                                        </td>
+                                        <td style="padding-top: 12px;">
+                                            <asp:Button ID="HoldP" runat="server" OnClick="HoldP_Click" Text="Hold" CssClass="btn" Visible="false" />
+                                        </td>
+                                        <td>
+                                           <%-- Alternate No.:--%>
+                                            <asp:TextBox ID="txtAlternateNo" runat="server" Width="100px" onkeypress="javascript:return isNumber(event)"
+                                                CssClass="textInput" Visible="false"></asp:TextBox>
+                                        </td>
+                                        <td style="padding-top: 12px;">
+                                            <asp:Button ID="btnAlternateNo" runat="server" Text="Dial" CssClass="btn" OnClick="btnAlternateNo_Click" Visible="false"/>
+                                        </td>
+                                        <td>
+                                            <%--<asp:Image ID="img1" runat="server" ImageUrl="~/Images/HDFC.png" Height="20px" Width="84px" />--%>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                           
+                            <div>
+                                <tr>
+                                    <td>
+                                        <asp:Label ID="lblServiceID" runat="server" Text="0"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:Label ID="Label1" runat="server" Text="0"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:Label ID="Label2" runat="server" Text="0"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:Label ID="Label3" runat="server" Text="0"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:Label ID="lblagentP" runat="server" Text="Agent Name"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:Label ID="Label4" runat="server" Text="Agent Name"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:Label ID="lblbatchP" runat="server" CssClass="label warning" Text="Batch Name"
+                                            Width="200px"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:Label ID="lblextn" runat="server" Text="Extn"></asp:Label>
+                                    </td>
+                                </tr>
+                            </div>
+                        </caption>
+                    </table>
+                </fieldset>
+            
+                <fieldset style="width: 100%;">
+                       <legend>
+                        <div style="font-size: 15px; font-family: 'Book Antiqua'; font-weight: bold; color: #1a4c78;
+                            width: auto;">
+                            Customer Details
+                        </div>
+                    </legend>
+                       
+                        <table class="nav-justified">
+                            <tr>
+                                <td class="style10">
+                                       <asp:Label ID="Label42" runat="server" class="label" Text="Name:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtNameA" runat="server" class="textInput" Enabled="True" 
+                                        PlaceHolder="Name"></asp:TextBox>
+                                </td>
+                                <td>
+                                  
+                                     <asp:Label ID="Label5" runat="server" class="label" Text="Mobile:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtMobileA" runat="server" class="textInput" Enabled="True" 
+                                        PlaceHolder="Mobile" Visible="false"></asp:TextBox>
+
+                                         <asp:TextBox ID="txtMobileMask" runat="server" class="textInput" Enabled="True" 
+                                        PlaceHolder="Mobile"></asp:TextBox>
+                                </td>
+                                <td>
+                                    
+                                      <asp:Label ID="Label6" runat="server" class="label" Text="Company:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtCompanyA" runat="server" class="textInput"  Enabled="True" 
+                                        PlaceHolder="Company"></asp:TextBox>
+                                </td>
+                                <td class="style9">
+                                    
+                                      <asp:Label ID="Label7" runat="server" class="label" Text="Email:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtEmailA" runat="server" class="textInput" Enabled="true" 
+                                        PlaceHolder="Email"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="style10">
+                                   
+                                      <asp:Label ID="Label8" runat="server" class="label" Text="Category:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtCategoryA" runat="server" class="textInput" Enabled="True" 
+                                        PlaceHolder="Category"></asp:TextBox>
+                                </td>
+                                <td>
+                                    
+                                      <asp:Label ID="Label9" runat="server" class="label" Text="City:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtCityA" runat="server" class="textInput" Enabled="True" 
+                                        PlaceHolder="City"></asp:TextBox>
+                                </td>
+                                <td>
+                                    
+                                      <asp:Label ID="Label10" runat="server" class="label" Text="State:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                </td>
+                                <td>
+
+                                <asp:DropDownList runat="server" ID="txtStateA" AutoPostBack="true" CssClass="select-style select"  Width="160px">
+                                    <asp:ListItem Value="" Text=""></asp:ListItem>
+                                    <asp:ListItem Value="Yes" Text="Yes"></asp:ListItem>
+                                    <asp:ListItem Value="No" Text="No"></asp:ListItem>
+                                     <asp:ListItem Value="NA" Text="NA"></asp:ListItem>
+                                </asp:DropDownList>
+
+                                    <%--<asp:TextBox ID="txtStateA" runat="server" class="textInput" Enabled="false"  
+                                        PlaceHolder="State"></asp:TextBox>--%>
+                                    <%-- <asp:TextBox ID="txtTelno1Masking" runat="server" PlaceHolder="Tel No 1" class="textInput"
+                                            Enabled="false"></asp:TextBox>--%>
+                                </td>
+                            </tr>
+                        </table>
+                   </fieldset>
+
+                <fieldset style="width: 100%;">
+                    <legend>
+                        <div style="font-size: 15px; font-family: 'Book Antiqua'; font-weight: bold; color: #1a4c78;
+                            width: auto;">
+                            Captured Details
+                        </div>
+                    </legend>
+                    <div>
+                        <div>
+                            <table class="nav-justified">
+
+                             <tr>
+
+                              <td>
+                                        
+                                        <asp:Label ID="Label13" runat="server" class="label" Text="Mobile:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtMobile" runat="server" class="textInput" Enabled="True"  PlaceHolder="Mobile"
+                                            ></asp:TextBox>
+                                    </td>
+                                    <td>
+                                      
+                                        <asp:Label ID="Label12" runat="server" class="label" Text="Name:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtName"  runat="server" class="textInput" PlaceHolder="Name" Enabled="True" ></asp:TextBox>
+                                    </td>
+                                    <td>
+                                        
+                                        <asp:Label ID="Label14" runat="server" class="label" Text="Company:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtCompany" runat="server"  class="textInput"
+                                            PlaceHolder="Company" Enabled="True" ></asp:TextBox>
+                                    </td>
+                                    <td class="style9">
+                                        
+                                        <asp:Label ID="Label15" runat="server" class="label" Text="Email:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtEmail" runat="server" PlaceHolder="Email" Enabled="True" class="textInput"
+                                             ></asp:TextBox>
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                    <td>
+                                        
+                                        <asp:Label ID="Label17" runat="server" class="label" Text="City:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                    <asp:DropDownList runat="server" ID="txtCity" AutoPostBack="true" 
+                                            CssClass="select-style select"  Width="160px" 
+                                            onselectedindexchanged="txtCity_SelectedIndexChanged">
+                                    <%--<asp:ListItem Value="" Text=""></asp:ListItem>--%>
+                                   
+                                </asp:DropDownList>
+                                        <%--<asp:TextBox ID="txtCity" runat="server" PlaceHolder="City" Enabled="false"  class="textInput"
+                                             ></asp:TextBox>--%>
+                                    </td>
+                                     <td>
+                                       
+                                       <asp:Label ID="Label18" runat="server" class="label" Text="State:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+
+                                  <asp:TextBox ID="txtState" runat="server"  class="textInput"
+                                            PlaceHolder="Company" Enabled="false" ></asp:TextBox>
+
+                                    </td>
+
+                                     <td>
+                                       
+                                       <asp:Label ID="Label11" runat="server" class="label" Text="Branch Manger:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+
+<asp:TextBox ID="txtBranchManager" runat="server"  class="textInput"
+                                            PlaceHolder="Company" Enabled="false" ></asp:TextBox>
+
+                                        <%--<asp:TextBox ID="txtState" runat="server" PlaceHolder="State" Enabled="false" class="textInput"
+                                           ></asp:TextBox>--%>
+                                       <%-- <asp:TextBox ID="txtTelno1Masking" runat="server" PlaceHolder="Tel No 1" class="textInput"
+                                            Enabled="false"></asp:TextBox>--%>
+                                    </td>
+
+                                     <td>
+                                       
+                                       <asp:Label ID="Label16" runat="server" class="label" Text="Branch Manger Number:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+
+                                   <asp:TextBox ID="txtBranchManagerNumber" runat="server"  class="textInput"
+                                            PlaceHolder="Company" Enabled="false" ></asp:TextBox>
+
+                                        <%--<asp:TextBox ID="txtState" runat="server" PlaceHolder="State" Enabled="false" class="textInput"
+                                           ></asp:TextBox>--%>
+                                       <%-- <asp:TextBox ID="txtTelno1Masking" runat="server" PlaceHolder="Tel No 1" class="textInput"
+                                            Enabled="false"></asp:TextBox>--%>
+                                    </td>
+                                     </tr>
+                                       </table>
+                                       <div>
+                            <table class="nav-justified">
+                                <tr>
+                                  <td class="style9">
+                                       
+                                       <asp:Label ID="Label19" runat="server" class="label" Text="Product Required:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+
+                                    <asp:DropDownList runat="server" ID="txtPincode" AutoPostBack="false" CssClass="select-style select" Width="150px">
+                                    <asp:ListItem Value="" Text=""></asp:ListItem>
+                                    <asp:ListItem Value="" Text=""></asp:ListItem>
+                                    <asp:ListItem Value="Vyapar" Text="Vyapar"></asp:ListItem>
+                                    <asp:ListItem Value="Udyam" Text="Udyam"></asp:ListItem>                                     
+                                </asp:DropDownList>
+
+                                       <%-- <asp:TextBox ID="txtPincode" runat="server" class="textInput" PlaceHolder="Pin code"></asp:TextBox>--%>
+
+                                       <%-- <asp:TextBox ID="txtTelno2Masking" runat="server" PlaceHolder="Tel No 1" class="textInput"
+                                            Enabled="false"></asp:TextBox>--%>
+                                    </td>
+
+                                     <td>
+                                        
+                                        <asp:Label ID="Label39" runat="server" class="label" Text="Loan Amount:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtCust_LoanAmount"   runat="server"
+                                            class="textInput" PlaceHolder="Loan Amount"></asp:TextBox>
+                                    </td>
+
+                                     <td>
+                                        
+                                        <asp:Label ID="Label35" runat="server" class="label" Text="Purpose of Loan:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+
+                                    <asp:DropDownList runat="server" ID="txtPurposeofLoan" AutoPostBack="true" CssClass="select-style select"  Width="160px">
+                                    <asp:ListItem Value="" Text=""></asp:ListItem>
+                                    <asp:ListItem Value="Expansion of Business." Text="Expansion of Business."></asp:ListItem>
+                                    <asp:ListItem Value="Requirement of Working capital." Text="Requirement of Working capital."></asp:ListItem>
+                                    <asp:ListItem Value="Purchase of Capital equipment (CAPEX)." Text="Purchase of Capital equipment (CAPEX)."></asp:ListItem>
+                                    <asp:ListItem Value="Refinance of existing loans/ Balance Transfers." Text="Refinance of existing loans/ Balance Transfers."></asp:ListItem>
+                                    <asp:ListItem Value="Purchase of commercial property (applicable for Vyapar Loans & its variant)." Text="Purchase of commercial property (applicable for Vyapar Loans & its variant)."></asp:ListItem>
+                                    <asp:ListItem Value="To meet temporary requirement of cash flow." Text="To meet temporary requirement of cash flow."></asp:ListItem>
+                                    <asp:ListItem Value="Top Up for any emergency/planned needs." Text="Top Up for any emergency/planned needs."></asp:ListItem>
+                                    <asp:ListItem Value="For Repair works." Text="For Repair works."></asp:ListItem>
+                                    <asp:ListItem Value="Furniture and Extra work." Text="Furniture and Extra work."></asp:ListItem>
+                                    <asp:ListItem Value="For completion of any ad-hoc work- order." Text="For completion of any ad-hoc work- order."></asp:ListItem>
+                                    <asp:ListItem Value="Replacement of Assets. " Text="Replacement of Assets. "></asp:ListItem>
+                                     <asp:ListItem Value="NA" Text="NA"></asp:ListItem>
+                                </asp:DropDownList>
+
+                                        <%--<asp:TextBox ID="TextBox1"   runat="server"
+                                            class="textInput" PlaceHolder="Loan Amount"></asp:TextBox>--%>
+                                    </td>
+
+                                    <td>
+                                        
+                                        <asp:Label ID="Label20" runat="server" class="label" Text="GST:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:DropDownList runat="server" ID="ddlGST" AutoPostBack="true" CssClass="select-style select"  Width="160px">
+                                    <asp:ListItem Value="" Text=""></asp:ListItem>
+                                    <asp:ListItem Value="Yes" Text="Yes"></asp:ListItem>
+                                    <asp:ListItem Value="No" Text="No"></asp:ListItem>
+                                     <asp:ListItem Value="NA" Text="NA"></asp:ListItem>
+                                </asp:DropDownList>
+                                    </td>
+
+                                    <td>
+                                        
+                                        <asp:Label ID="Label21" runat="server" class="label" Text="ITR:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:DropDownList runat="server" ID="ddlITR" AutoPostBack="true" CssClass="select-style select" Width="160px"> <asp:ListItem Value="" Text=""></asp:ListItem>
+                                    <asp:ListItem Value="Yes" Text="Yes"></asp:ListItem>
+                                    <asp:ListItem Value="No" Text="No"></asp:ListItem>
+                                     <asp:ListItem Value="NA" Text="NA"></asp:ListItem>
+                                </asp:DropDownList>
+                                    </td>
+
+                                       </tr>
+                                    <tr>
+
+                                    <td class="style13">
+                                        
+                                        <asp:Label ID="Label22" runat="server" class="label" Text="Bank Statement:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:DropDownList runat="server" ID="ddlBankStatement" AutoPostBack="true" CssClass="select-style select" Width="150px">
+                                    <asp:ListItem Value="" Text=""></asp:ListItem>
+                                    <asp:ListItem Value="Yes" Text="Yes"></asp:ListItem>
+                                    <asp:ListItem Value="No" Text="No"></asp:ListItem>
+                                     <asp:ListItem Value="NA" Text="NA"></asp:ListItem>
+                                </asp:DropDownList>
+                                    </td>
+
+                                    <td>
+                                        
+                                        <asp:Label ID="Label23" runat="server" class="label" Text="Business Vintage:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtBussinessVintage"   runat="server"
+                                            class="textInput" PlaceHolder="Business Vintage"></asp:TextBox>
+                                    </td>
+
+                                 <td class="style12">
+                                        
+                                        <asp:Label ID="Label32" runat="server" class="label" Text="Cibil Score:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                      <asp:DropDownList runat="server" ID="txtcibilscore" AutoPostBack="true" CssClass="select-style select" Width="150px">
+                                    <asp:ListItem Value="" Text=""></asp:ListItem>
+                                    <asp:ListItem Value="630 - 650" Text="630 - 650"></asp:ListItem>
+                                    <asp:ListItem Value="No" Text="650 - 680"></asp:ListItem>
+                                     <asp:ListItem Value="680 +" Text="680 +"></asp:ListItem>
+                                     <asp:ListItem Value="NA" Text="NA"></asp:ListItem>
+                                </asp:DropDownList>
+                                    </td>
+                                  
+                               
+                              
+                            
+                          
+                      
+                                    
+                                    
+                                    
+                                    
+
+                                    
+
+                                 
+
+                                     <td>
+                                        
+                                        <asp:Label ID="Label33" runat="server" class="label" Text="EMI Bounced in Last 6 Month:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+
+                                    <asp:DropDownList runat="server" ID="txtEmiBounced" AutoPostBack="true" CssClass="select-style select"  Width="160px"
+                                    >
+                                    <asp:ListItem Value="" Text=""></asp:ListItem>
+                                    <asp:ListItem Value="1" Text="1"></asp:ListItem>
+                                    <asp:ListItem Value="2" Text="2"></asp:ListItem>
+                                    <asp:ListItem Value="3" Text="3"></asp:ListItem>
+                                    <asp:ListItem Value="4" Text="4"></asp:ListItem>
+                                    <asp:ListItem Value="5" Text="5"></asp:ListItem>
+                                    <asp:ListItem Value="6" Text="6"></asp:ListItem>
+                                     <asp:ListItem Value="NA" Text="NA"></asp:ListItem>
+                                </asp:DropDownList>
+                                   </tr>
+
+                                <tr>
+                                        <%--<asp:TextBox ID="TextBox1"  runat="server"
+                                            class="textInput" PlaceHolder=" Annual Income"  ></asp:TextBox>--%>
+                                    </td>
+
+                                     <td>
+                                        
+                                        <asp:Label ID="Label34" runat="server" class="label" Text="Meeting Appointment Date:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+
+                                    <telerik:RadDateTimePicker ID="DTAppointmentDate" runat="server" CssClass="boxes" Culture="en-US"
+                                    Enabled="true" Height="20px" MinDate="1990-01-01" PopupDirection="BottomLeft"
+                                    Width="170px" />
+                                        <%--<asp:TextBox ID="TextBox1"  runat="server"
+                                            class="textInput" PlaceHolder=" Annual Income"  ></asp:TextBox>--%>
+                                    </td>
+                                    <td class="style13">
+                                        
+                                        <asp:Label ID="Label24" runat="server" class="label" Text="Visit Address:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtVisitAddress"  runat="server"
+                                            class="textInput" PlaceHolder=" Visit Address"  TextMode="MultiLine"></asp:TextBox>
+                                    </td>
+                                    
+                                    <td class="style13">
+                                        
+                                        <asp:Label ID="Label36" runat="server" class="label" Text="Lead Status:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:DropDownList runat="server" ID="DDLeadStatus" AutoPostBack="true" 
+                                            CssClass="select-style select" Width="150px" 
+                                            onselectedindexchanged="DDLeadStatus_SelectedIndexChanged">                                   
+                                </asp:DropDownList>
+                                    </td>
+
+                                       <td class="style13">
+                                        
+                                        <asp:Label ID="Label44" runat="server" class="label" Text="Branch Dispose:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:DropDownList runat="server" ID="DDBranchDispose" AutoPostBack="true" CssClass="select-style select" Width="150px">                                   
+                                </asp:DropDownList>
+                                    </td>
+                                    
+                                    </tr>
+                                    <tr>
+
+                                       <td class="style13">
+                                        
+                                        <asp:Label ID="Label45" runat="server" class="label" Text="Sub Remarks:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtSubRemarks"  runat="server"
+                                            class="textInput" PlaceHolder="Annual Income" TextMode="MultiLine"></asp:TextBox>
+                                    </td>
+
+                                <%--    <td>
+                                       
+                                        <asp:Label ID="Label25" runat="server" class="label" Text=" Current Residential:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtCurrentResidential"  runat="server"
+                                            class="textInput" PlaceHolder="Current Residential" TextMode="MultiLine" ></asp:TextBox>
+                                    </td>--%>
+                                    <%-- <td class="style12">
+                                        
+                                        <asp:Label ID="Label37" runat="server" class="label" Text="Source:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>--%>
+                                   <%-- <td>
+                                        <asp:TextBox ID="txtCust_Source"   runat="server"
+                                            class="textInput" PlaceHolder="Source" Enabled="false" ></asp:TextBox>
+                                    </td>
+
+                                     <td>
+                                        
+                                        <asp:Label ID="Label38" runat="server" class="label" Text="Campaign:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>--%>
+                                   <%-- <td>
+                                        <asp:TextBox ID="txtCust_Campaign"   runat="server"
+                                            class="textInput" PlaceHolder="Campaign" Enabled="false" ></asp:TextBox>
+                                    </td>--%>
+                                     
+                             
+                                  
+
+                                     
+                                    <td class="style13">
+                                        
+                                        <asp:Label ID="Label40" runat="server" class="label" Text="Disbursement Amount:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtCust_DisbursementAmount"   runat="server"
+                                            class="textInput" PlaceHolder="Disbursement Amount"></asp:TextBox>
+                                    </td>
+
+                                    <td class="style12">
+                                        
+                                        <asp:Label ID="Label43" runat="server" class="label" Text="Presentation:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:DropDownList runat="server" ID="ddl_Presentation" AutoPostBack="true" CssClass="select-style select" Width="150px">
+                                    <asp:ListItem Value="" Text=""></asp:ListItem>
+                                    <asp:ListItem Value="Yes" Text="Yes"></asp:ListItem>
+                                    <asp:ListItem Value="No" Text="No"></asp:ListItem>
+                                </asp:DropDownList>
+                                    </td>
+
+                                   <%--  <td>
+                                        
+                                        <asp:Label ID="Label41" runat="server" class="label" Text="Product:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtCust_Product"   runat="server"
+                                            class="textInput" PlaceHolder="Product" Enabled="false" ></asp:TextBox>
+                                    </td>--%>
+
+                                   <%-- <td class="style12">
+                                        
+                                        <asp:Label ID="Label43" runat="server" class="label" Text="Presentation:" ForeColor="Black"
+                                        Font-Bold="True" width="60px"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:DropDownList runat="server" ID="ddlCust_Presentation" AutoPostBack="true" CssClass="select-style select" Width="150px">
+                                    <asp:ListItem Value="" Text=""></asp:ListItem>
+                                    <asp:ListItem Value="Yes" Text="Yes"></asp:ListItem>
+                                    <asp:ListItem Value="No" Text="No"></asp:ListItem>
+                                </asp:DropDownList>
+                                    </td>--%>
+                               </tr>
+                               </table>
+                        </div>
+                    </div>
+                       
+                    </div>
+                    </fieldset>
+             
+              
+                  
+                            <fieldset style="width: 100%;">
+                                <legend>
+                                    <div style="font-size: 15px; font-family: 'Book Antiqua'; font-weight: bold; color: #1a4c78;
+                            width: auto;">
+                                        Disposition Details
+                                    </div>
+                                </legend>
+                                <table class="nav-justified">
+                                    <tr>
+                                        <td>
+                                            <asp:Label ID="Label26" runat="server" class="label" Font-Bold="True" 
+                                                ForeColor="Black" Text="Status:" width="80px"></asp:Label>
+                                            <asp:DropDownList ID="cmbDisposition" runat="server" AutoPostBack="true" 
+                                                CssClass="select-style select" 
+                                                OnSelectedIndexChanged="cmbDisposition_SelectedIndexChanged" Width="150px">
+                                                <%--<asp:ListItem Value="1" Text="Contacted"></asp:ListItem>
+                                <asp:ListItem Value="2" Text="Not-Contacted"></asp:ListItem>--%>
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label27" runat="server" class="label" Font-Bold="True" 
+                                                ForeColor="Black" Text="Sub-Status:" width="80px"></asp:Label>
+                                            <asp:DropDownList ID="cmbSubdisposition" runat="server" AutoPostBack="true" 
+                                                CssClass="select-style select" 
+                                                OnSelectedIndexChanged="cmbSubdisposition_SelectedIndexChanged" Width="150px">
+                                                <%--<asp:ListItem Value="1" Text="Ringing"></asp:ListItem>
+                                <asp:ListItem Value="2" Text="Switched-Off"></asp:ListItem>
+                                <asp:ListItem Value="3" Text="Interested"></asp:ListItem>--%>
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label28" runat="server" class="label" Font-Bold="True" 
+                                                ForeColor="Black" Text=" Sub-Status 1:" width="90px"></asp:Label>
+                                            <asp:DropDownList ID="drpSusubdisposition" runat="server" AutoPostBack="true" 
+                                                CssClass="select-style select" 
+                                                onselectedindexchanged="drpSusubdisposition_SelectedIndexChanged" 
+                                                ontextchanged="drpSusubdisposition_TextChanged" Visible="false" Width="150px">
+                                                <%--<asp:ListItem Value="1" Text="Contacted"></asp:ListItem>
+                                <asp:ListItem Value="2" Text="Not-Contacted"></asp:ListItem>--%>
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label29" runat="server" class="label" Font-Bold="True" 
+                                                ForeColor="Black" Text="Call Back Date And Time:" width="150px"></asp:Label>
+                                            <telerik:RadDateTimePicker ID="Radcallback" TimeView-StartTime="09:00" TimeView-EndTime="21:00" runat="server" CssClass="boxes" 
+                                                Culture="en-US" Enabled="false" Height="20px" MinDate="1990-01-01" 
+                                                PopupDirection="BottomLeft" Width="170px" />
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="sessionLabel" runat="server"></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <asp:Label ID="lblDispcodeValue" runat="server" class="label" Font-Bold="True" 
+                                                ForeColor="Black" Text="DispCode" width="80px" Visible="false"></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <div>
+                                        <table class="nav-justified">
+                                            <tr>
+                                                <%--<td>
+                                            <asp:TextBox ID="txtPFAAddress" runat="server" PlaceHolder="PFA Address" class="textbox"
+                                                Height="81px" TextMode="MultiLine" Width="324px"></asp:TextBox>
+                                        </td>--%>
+                                                <td>
+                                                    <asp:TextBox ID="txtTSRRemarks" runat="server" class="textbox" Height="40px" 
+                                                        PlaceHolder="Agent Remarks" TextMode="MultiLine" Width="500px"></asp:TextBox>
+                                                </td>
+                                                <td>
+                                                    <asp:DropDownList ID="ddlVerifierName" runat="server" 
+                                                        CssClass="select-style select" Visible="false">
+                                                    </asp:DropDownList>
+                                                </td>
+                                                <td>
+                                                    <asp:Button ID="btnDisposeCall" runat="server" CssClass="btn" Font-Bold="true" 
+                                                        OnClick="btnDisposeCall_Click" Text="Dispose" />
+                                                </td>
+                                                <td>
+                                                    <asp:Label ID="lblAppointmentAddHourPlusThree" runat="server" ForeColor="Red" 
+                                                        Width="125px"></asp:Label>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </table>
+                            </fieldset>
+           </telerik:RadPageView>
+           
+                  <telerik:RadPageView ID="KB" runat="server" Height="750px">
+                 <li class="slide flex-active-slide" style="width: 100%; float: left; margin-right: -100%;
+                    display: list-item; position: static;">
+                    <iframe id="ifrm" name="ifrm" alt="Scripts" width="1200" height="700" runat="server" src="http://172.16.0.10/Ambit_KB/Ambit_KB.htm">
+                    </iframe>
+                    </li>
+
+
+            </telerik:RadPageView>
+              </telerik:RadMultiPage>
+          <%--  <telerik:RadPageView ID="NOTEPAD" runat="server" Height="750px">
+                <asp:TextBox ID="txtnotepad" runat="server" BackColor="White" BorderColor="#33CCCC"
+                    AutoPostBack="true" BorderStyle="Double" Height="570px" TextMode="MultiLine"
+                    Width="919px"></asp:TextBox>
+            </telerik:RadPageView>
+            <telerik:RadPageView ID="FedbackDetails" runat="server" Height="750px">
+                <iframe id="mainiFrame" name="mainiFrame" scrolling="auto" height="700px" width="1100px"
+                    src="" runat="server"></iframe>
+            </telerik:RadPageView>
+            <telerik:RadPageView ID="PFA_Count" runat="server" Height="750px">
+                <iframe id="Iframe1PFACount" name="Iframe1PFACount" scrolling="auto" height="700px"
+                    width="1100px" src="" runat="server"></iframe>
+            </telerik:RadPageView>--%>
+    
+   <%-- </div>--%>
+     
+    </form>
+</body>
+</html>
+
+
+C# code ===========================================
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Data;
+using Telerik.Web.UI;
+using System.Net;
+using System.IO;
+using System.Text;
+using System.Globalization;
+using System.Data.Odbc;
+using System.Drawing;
+using MySql.Data.MySqlClient;
+using System.Diagnostics;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.Adapters;
+using System.Web.Util;
+
+public partial class SAVEX_OUTBOND : System.Web.UI.Page
+{
+    //SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["Constring"].ConnectionString);
+
+    string strQuery = "";
+    public string strInsertSatus = "Y";
+    int myServiceId = 0;
+    int GenericLeadId = 0;
+    string strTableName = "";
+    string strDbName = "";
+    string strLeadID, strlead_ID, strCallType, strHost, strServiceID, strCallNumber, NextDialTime, CallNumber, DNI = "";
+    string dtm2 = "";
+    string strDispParam = "";
+    string id = "";
+    string BacthID = "";
+    int PopupStatus = 0;
+    String Address1 = "";
+    String Address2 = "";
+    String Address3 = "";
+    String MeetingCity = "";
+    String MeetingPincode = "";
+    String BatchId = "";
+
+    DateTime dt1, dt3;
+    string dtm1 = "", dtm3 = "";
+    DateTime expiryDate;
+    string MYIP;
+    int flag = 0;
+    int ii = 0;
+
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+        Radcallback.MaxDate = DateTime.Now.AddDays(7);
+        Radcallback.MinDate = DateTime.Today;
+      btnDisposeCall.Attributes.Add("onclick", ClientScript.GetPostBackEventReference(btnDisposeCall, "") + ";this.value='Please wait....';this.disabled = true;");
+
+        try
+        {
+            //string AgentCurrentStatus = AgentCurrentStatusOnCRM();
+            //Label4.Text = Request.QueryString[0];
+            Label4.Text = Request.QueryString["AGENTID"];
+
+        }
+        catch
+        {
+        }
+        try
+        {
+            lblextn.Text = Request.QueryString["extno"];
+
+        }
+        catch
+        {
+
+            // throw;
+        }
+        try
+        {
+            strHost = Convert.ToString(Session["HOSTID"].ToString());
+        }
+        catch
+        {
+        }
+
+        //Label3.Text = Request.QueryString["extno"];
+        MYIP = Request.ServerVariables["HTTP_X_FORWARDED_FOR"]; ;
+
+        if (string.IsNullOrEmpty(MYIP))
+        {
+            MYIP = Request.ServerVariables["REMOTE_ADDR"];
+        }
+
+        lblextn.Text = Request.QueryString["EXTNO"];
+        lblServiceID.Text = Request.QueryString["SERVICEID"];
+
+        if (!Page.IsPostBack)
+        {
+            try
+            {
+                txtTSRRemarks.Text = Request.QueryString[9];
+               // Label4.Text = Request.QueryString[8];
+            }
+            catch
+            {
+
+            }
+            try
+            {
+
+                if (Label3.Text == "IDLE")
+                {
+                    // txtRemarks.Text = Request.QueryString[0] + "~" + Request.QueryString[7] + "~" + Request.QueryString[8];
+
+                    //   txtRemarks.Text = Request.QueryString[8] + "~~" + Request.QueryString[0] + "~" + Request.QueryString[13] + "~" + Request.QueryString[3] + "~" + Request.QueryString[2];
+                    //txtCPCOUTCustName.Text = Request.QueryString[19];
+                    //txtCPCOUTTravelCountry.Text = Request.QueryString[13];
+                    //txtlead_idP.Text = Request.QueryString[3];
+                    //txtphoneP.Text = Request.QueryString[2];
+                    lblagentP.Text = Request.QueryString[0];
+                    //["AGENT"] = Request.QueryString[8];
+                    Label4.Text = Request.QueryString["AGENTID"];
+		    lblagentP.Text = Request.QueryString["AGENTID"];
+                    lblextn.Text = Request.QueryString["EXTNO"];
+                }
+
+            }
+            catch
+            {
+
+            }
+
+            try
+            {
+
+                if (txtTSRRemarks.Text != "IDLE")
+                {
+                    // txtRemarks.Text = Request.QueryString[0] + "~" + Request.QueryString[7] + "~" + Request.QueryString[8];
+                    // txtRemarks.Text = Request.QueryString[9] + "~~~" + Request.QueryString[0] + "~" + Request.QueryString[13] + "~" + Request.QueryString[3] + "~" + Request.QueryString[2];
+                    //txtCPCOUTCustName.Text = Request.QueryString[19];
+                    //txtCPCOUTTravelCountry.Text = Request.QueryString[13];
+                    //txtlead_idP.Text = Request.QueryString[3];
+                    //txtphoneP.Text = Request.QueryString[2];
+
+                    txtphoneP.Text = Request.QueryString[2];
+                    lblServiceID.Text = Request.QueryString[12];
+                    strHost = Request.QueryString[19];
+                    Label1.Text = Request.QueryString[9];
+                    txtlead_idA.Text = Label1.Text;
+                    CallNumber = Request.QueryString[3];
+                    Label4.Text = Request.QueryString["AGENTID"];
+                    //lblcallnumber.Text = strCallNumber;
+
+                   // Session["AgentID"] = Label4.Text = Request.QueryString[0];
+		  lblagentP.Text = Request.QueryString["AGENTID"];
+                   
+                }
+
+
+
+            }
+            catch
+            {
+
+            }
+
+
+
+            try
+            {
+               
+                GetDisposition();
+              
+                GetVerifiersName();
+               
+                // txtlead_idA.Text = Convert.ToString(Session["LeadId"].ToString());
+                Session["CallMobNo"] = txtphoneP.Text = Convert.ToString(Request.QueryString["CLI"]);
+                Session["strcalltypes"] = strCallType = Convert.ToString(Session["CALLTYPE"]);
+                Session["DNI"] = DNI = Convert.ToString(Session["DNI"].ToString());
+                //  lbldni.Text = DNI;
+                strCallNumber = Convert.ToString(Request.QueryString["CallNumber"]);
+               
+                //BindTCReason();
+            }
+            catch
+            {
+
+
+            }
+            if (!IsPostBack)
+            {
+                GetLeadStatus1();
+                GetCity();
+                //ddlstate.Items.Insert(0, new ListItem("--Select--", "0"));
+                ////ddlstate enabled is false.It is visible only country selection
+                //ddlstate.Enabled = false;
+
+            }
+
+
+
+
+            lblbatchP.Text = Label3.Text;
+            LOAD_Lead_DUMP9();
+           // ((HtmlControl)(form1.FindControl("Iframe1"))).Attributes["src"] = "http://172.16.0.10/Ambit_KB/Ambit_KB.htm";
+            SHOWDATA();
+            //Getstate();
+            //if (ii == 1)
+            //{
+            //    string display = @"newWindow();";
+            //    if (!Page.ClientScript.IsStartupScriptRegistered("myScript"))
+            //        Page.ClientScript.RegisterStartupScript(this.GetType(), ",myScript", display, true);
+            //    //this.Page_Load += new EventHandler(Button1_Click); 
+            //}
+           // getDisp();
+            //fillhistory();
+
+            //GetValuesFromSession();
+            //txtMeetingAddress.Attributes.Add("onkeypress", "return tbLimit();");
+            //txtMeetingAddress.Attributes.Add("onkeyup", "return tbCount(" + lblmtgcount.ClientID + ");");
+            //txtMeetingAddress.Attributes.Add("maxLength", "150");
+
+        }
+
+        
+
+
+    }
+
+    private void GetPincode()
+    {
+        try
+        {
+           ////// string queryString = "Select * from Servicable_Pincode_Live where Pincode='" + txtPincode.Text + "'";
+           
+            string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+               //////// using (MySqlCommand cmdPINStatus = new MySqlCommand(queryString, con))
+                {
+                   ///// cmdPINStatus.CommandText = queryString;
+                   /// cmdPINStatus.CommandType = CommandType.Text;
+
+                    //DataSet dsTCReason = new DataSet();
+                    DataTable dtPINStatus = new DataTable();
+                   // MySqlDataAdapter daPINStatus = new MySqlDataAdapter(cmdPINStatus);
+                   // daPINStatus.Fill(dtPINStatus);
+
+                    if (dtPINStatus.Rows.Count > 0 && dtPINStatus.Rows != null)
+                    {
+                        //txtPincode.BackColor = Color.LightGreen;
+                        //txtCustomerCity.BackColor = Color.LightGreen;
+                    }
+                    else
+                    {
+                        //txtPincode.BackColor = Color.Red;
+                        //txtCustomerCity.BackColor = Color.Red;
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+    }
+
+    private void GetMeetingPincode()
+    {
+        try
+        {
+            //string queryString = "Select * from Servicable_Pincode_Live where Pincode='" + txtMeetingPincode.Text + "'";
+
+            string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+              ///  using (MySqlCommand cmdPINStatus = new MySqlCommand(queryString, con))
+                {
+                    ////cmdPINStatus.CommandText = queryString;
+                   /// cmdPINStatus.CommandType = CommandType.Text;
+
+                    //DataSet dsTCReason = new DataSet();
+                    DataTable dtPINStatus = new DataTable();
+                  ////  MySqlDataAdapter daPINStatus = new MySqlDataAdapter(cmdPINStatus);
+                   // daPINStatus.Fill(dtPINStatus);
+
+                    if (dtPINStatus.Rows.Count > 0 && dtPINStatus.Rows != null)
+                    {
+                      //  txtMeetingPincode.BackColor = Color.LightGreen;
+                        
+                    }
+                    else
+                    {
+                       // txtMeetingPincode.BackColor = Color.Red;
+                        
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+    }
+
+    //private void GetValuesFromSession()
+    //{
+    //    try
+    //    {
+    //        txtCustomerId.Text = Session["txtCustomerId"].ToString();
+    //        txtPolicyNo.Text = Session["txtPolicyNo"].ToString();
+    //        txtCustomerName.Text = Session["txtFirstName"].ToString();
+    //        txtInvoiceNo.Text = Session["txtLastName"].ToString();
+    //        //txtAddress.Text = Session["txtAddress"].ToString();
+    //        //txtPincode.Text = Session["txtPin_Code"].ToString();
+    //        //txtCustomerCity.Text = Session["txtCustomerCity"].ToString();
+    //        txtLoyaltyCity.Text = Session["txtLoyaltyCity"].ToString();         
+    //        txtMobileNumber.Text = Session["txtMobileNo"].ToString();
+    //        //txtTelno1.Text = Session["txtPhone1"].ToString();
+    //        //txtTelno2.Text = Session["txtPhone2"].ToString();
+    //       //// txtDateofBirth.Text = Session["txtDateofBirth"].ToString();
+    //        txtInvoiceDate.Text = Session["txtGender"].ToString();
+    //        txtCustomerId.Text = Session["txtMaritalStatus"].ToString();
+    //        txtOccupationCodeDesc.Text = Session["txtOccupationCodeDesc"].ToString();
+    //       //// txtAge.Text = Session["txtAge"].ToString();
+    //        txtAgeBand.Text = Session["txtAgeBand"].ToString();
+    //        txtInforcePlusPaidUp.Text = Session["txtInforcePlusPaidUp"].ToString();
+    //        txtCallafter.Text = Session["txtCallafter"].ToString();
+    //        txtTop3ProductGroupstopitch.Text = Session["txtTop3ProductGroupstopitch"].ToString();
+    //        txtL_Top3Products1.Text = Session["txtL_Top3Products1"].ToString();
+    //        txtL_Top3Products2.Text = Session["txtL_Top3Products2"].ToString();
+    //        txtTradSavingDecile.Text = Session["txtTradSavingDecile"].ToString();
+    //        txtNDNCPrimaryContactNo.Text = Session["txtNDNCPrimaryContactNo"].ToString();
+    //        //txtPolicyIssuanceDate.Text = Session["txtIssuanceDate"].ToString();
+    //        txtCommencementDate.Text = Session["txtCommencementDate"].ToString();
+    //        txtPolicyName.Text = Session["txtPolicyName"].ToString();
+    //        txtTotalSumAssured.Text = Session["txtTotalSumAssured"].ToString();
+    //        txtPremium.Text = Session["txtPremium"].ToString();
+    //        txtTotalPremium.Text = Session["txtTotalPremium"].ToString();
+    //        txtEPI.Text = Session["txtEPI"].ToString();
+    //        txtRiskCessationTerm.Text = Session["txtRiskCessationTerm"].ToString();
+    //        txtPremiumCessationTerm.Text = Session["txtPremiumCessationTerm"].ToString();
+    //        txtBillingFrequency.Text = Session["txtBillingFrequency"].ToString();
+    //        txtPolicyStatus.Text = Session["txtPolicyStatus"].ToString();
+    //        txtPaidtoDate.Text = Session["txtPaidtoDate(PTD)"].ToString();
+    //        txtAgentNo.Text = Session["txtAgentNo"].ToString();
+    //        txtAgentName.Text = Session["txtAgentName"].ToString();
+    //        txtAgentTypeCode.Text = Session["txtAgentType"].ToString();
+    //        txtBranchName.Text = Session["txtBranchName"].ToString();
+    //        txtChannel.Text = Session["txtChannel"].ToString();
+    //        txtSubChannel.Text = Session["txtSUB_CHANNEL"].ToString();
+    //        txtTmName.Text = Session["txtTmName"].ToString();
+    //        txtAVPName.Text = Session["txtAvpName"].ToString();
+    //        txtPaymentChannel.Text = Session["txtPaymentChannel"].ToString();
+    //        txtFundValue.Text = Session["txtFundValue"].ToString();
+    //        txtIncome.Text = Session["txtIncome"].ToString();
+    //        txtLGCODE.Text = Session["txtLGCODE"].ToString();
+    //        txtHDFCBankCustomer.Text = Session["txtHDFCBankCustomer(10)"].ToString();
+    //        txtFLSCode.Text = Session["txtFLSCode"].ToString();
+    //        txtFLSName.Text = Session["txtFLSName"].ToString();
+    //        txtTerminationdate.Text = Session["txtTerminationdate"].ToString();
+    //        txtLocation.Text = Session["txtlocation"].ToString();
+    //        txtFUND01_Desc.Text = Session["txtFUND01_Desc"].ToString();
+    //        txtFUND02_Desc.Text = Session["txtFUND02_Desc"].ToString();
+    //        txtFUND03_Desc.Text = Session["txtFUND03_Desc"].ToString();
+    //        txtFUND04_Desc.Text = Session["txtFUND04_Desc"].ToString();
+    //        txtFUND05_Desc.Text = Session["txtFUND05_Desc"].ToString();
+    //        txtFUND06_Desc.Text = Session["txtFUND06_Desc"].ToString();
+    //        txtFUND07_Desc.Text = Session["txtFUND07_Desc"].ToString();
+    //        txtFUND08_Desc.Text = Session["txtFUND08_Desc"].ToString();
+    //        txtFUND09_Desc.Text = Session["txtFUND09_Desc"].ToString();
+    //        txtFUND10_Desc.Text = Session["txtFUND10_Desc"].ToString();
+    //        TextPERC_AMT01.Text = Session["txtPERC_AMT01"].ToString();
+    //        TextPERC_AMT02.Text = Session["txtPERC_AMT02"].ToString();
+    //        TextPERC_AMT03.Text = Session["txtPERC_AMT03"].ToString();
+    //        TextPERC_AMT04.Text = Session["txtPERC_AMT04"].ToString();
+    //        TextPERC_AMT05.Text = Session["txtPERC_AMT05"].ToString();
+    //        TextPERC_AMT06.Text = Session["txtPERC_AMT06"].ToString();
+    //        TextPERC_AMT07.Text = Session["txtPERC_AMT07"].ToString();
+    //        TextPERC_AMT08.Text = Session["txtPERC_AMT08"].ToString();
+    //        TextPERC_AMT09.Text = Session["txtPERC_AMT09"].ToString();
+    //        TextPERC_AMT10.Text = Session["txtPERC_AMT10"].ToString();
+    //        txtProduct.Text = Session["txtProduct"].ToString();
+    //        txtDataStatus.Text = Session["txtdatastatus"].ToString();
+    //        txtCampName.Text = Session["txtCamp_Name"].ToString();
+    //        //txtFinalCamp.Text = Session["txtFinal_Camp"].ToString();
+    //        txtDNCStatus.Text = Session["txtDNC_Status"].ToString();
+    //        txtBANCAStatus.Text = Session["txtBANCA_Status"].ToString();
+    //        txtDSC_Status.Text = Session["txtDSC_Status"].ToString();
+    //        txtLotStatus.Text = Session["txtLotStatus"].ToString();
+    //        txtMobileStatus.Text = Session["txtMobileStatus"].ToString();
+    //        txtDNC1.Text = Session["txtDNC1"].ToString();
+    //        txtDNC2.Text = Session["txtDNC2"].ToString();
+    //        txtDNC3.Text = Session["txtDNC3"].ToString();
+    //        txtDup_On_ConctactNo.Text = Session["txtDup_On_ConctactNo"].ToString();
+    //        txtDup_On_Lead_Contact.Text = Session["txtDup_On_Lead_Contact"].ToString();
+    //        txtData_Part.Text = Session["txtData_Part"].ToString();
+    //        txtPlanName.Text = Session["txtPlanName"].ToString();
+    //        txtEPI_Status.Text = Session["txtEPI_Status"].ToString();
+    //        txtLoyaltySegment.Text = Session["txtLoyaltySegment"].ToString();
+    //        txtFundValue_Banding.Text = Session["txtFundValue_Banding"].ToString();
+    //        txtEPI_Banding.Text = Session["txtEPI_Banding"].ToString();
+    //        txtConvUL.Text = Session["txtConvUL"].ToString();
+    //        txtProduct_Code.Text = Session["txtProduct_Code"].ToString();
+    //        txtProduct_Category.Text = Session["txtProduct_Category"].ToString();
+    //        txtIssuance_Date_Bucket.Text = Session["txtIssuance_Date_Bucket"].ToString();
+    //        txtIRRPercentage.Text = Session["txtIRRPercentage"].ToString();
+    //        txtDSC_CAMP.Text = Session["txtDSC_CAMP"].ToString();
+    //        txtFund01.Text = Session["txtFund01"].ToString();
+    //        txtFund02.Text = Session["txtFund02"].ToString();
+    //        txtFund03.Text = Session["txtFund03"].ToString();
+    //        txtFund04.Text = Session["txtFund04"].ToString();
+    //        txtFund05.Text = Session["txtFund05"].ToString();
+    //        txtFund06.Text = Session["txtFund06"].ToString();
+    //        txtFund07.Text = Session["txtFund07"].ToString();
+    //        txtFund08.Text = Session["txtFund08"].ToString();
+    //        txtFund09.Text = Session["txtFund09"].ToString();
+    //        txtFund10.Text = Session["txtFund10"].ToString();
+    //        txtEquity.Text = Session["txtEquity"].ToString();
+    //        txtBalanced.Text = Session["txtBalanced"].ToString();
+    //        txtDebt.Text = Session["txtDebt"].ToString();
+    //        txtCamp_Status.Text = Session["txtCamp_Status"].ToString();
+    //        txtBatchid.Text = Session["txtBatchid"].ToString();
+    //        //txtUpload_date.Text = Session["txtUpload_date"].ToString();
+    //      //  txtNotes.Text = Session["txtNotes"].ToString();
+
+    //    }
+    //    catch
+    //    {
+
+    //    }
+    //}
+
+    private void GetVerifiersName()
+    {
+        try
+        {
+            string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                using (MySqlCommand cmdTCStatus = new MySqlCommand("USP_GetVerifiersName", con))
+                {
+                    //cmdTCStatus.Parameters.AddWithValue("@P_Disposition", disposition);
+                    cmdTCStatus.CommandType = CommandType.StoredProcedure;
+
+                    DataSet dsTCReason = new DataSet();
+                    MySqlDataAdapter daTCReason = new MySqlDataAdapter(cmdTCStatus);
+                    daTCReason.Fill(dsTCReason);
+
+                    if (dsTCReason.Tables[0].Rows.Count > 0 && dsTCReason.Tables[0] != null)
+                    {
+                        ddlVerifierName.DataTextField = "VerifierName";
+                        ddlVerifierName.DataValueField = "VerifierEmpId";
+                        ddlVerifierName.DataSource = dsTCReason.Tables[0];
+                        ddlVerifierName.DataBind();
+                    }
+                    else
+                    {
+                        ddlVerifierName.DataSource = null;
+                        ddlVerifierName.DataBind();
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+    }
+
+    private string AgentCurrentStatusOnCRM()
+    {
+        string str1 = "http://172.16.0.82:9899/?reqtype=agentstatus&user=" + lblagentP.Text + "&host=" + MYIP + "";
+
+        var request = (HttpWebRequest)WebRequest.Create(str1);
+
+        var response = (HttpWebResponse)request.GetResponse();
+
+        var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+        return responseString;
+    }
+
+
+
+    private void GetDisposition()
+    {
+        try
+        {
+            string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                using (MySqlCommand cmdTCStatus = new MySqlCommand("usp_getdisposition", con))
+                {
+                    cmdTCStatus.CommandType = CommandType.StoredProcedure;
+
+                    DataSet dsTCReason = new DataSet();
+                    MySqlDataAdapter daTCReason = new MySqlDataAdapter(cmdTCStatus);
+                    daTCReason.Fill(dsTCReason);
+
+                    if (dsTCReason.Tables[0].Rows.Count > 0 && dsTCReason.Tables[0] != null)
+                    {
+                        cmbDisposition.DataTextField = "disposition";
+                        //cmbDisposition.DataValueField = "ID";
+                        cmbDisposition.DataSource = dsTCReason.Tables[0];
+                        cmbDisposition.DataBind();
+
+                    }
+                    else
+                    {
+                        cmbDisposition.DataSource = null;
+                        cmbDisposition.DataBind();
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+    }
+
+    public void GetLeadStatus1()
+    {
+
+        DDLeadStatus.Items.Clear();
+         try
+        {
+            string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                using (MySqlCommand cmdTCStatus = new MySqlCommand("usp_getStatus1", con))
+                {
+                    cmdTCStatus.CommandType = CommandType.StoredProcedure;
+
+                    DataSet dsTCReason = new DataSet();
+                    MySqlDataAdapter daTCReason = new MySqlDataAdapter(cmdTCStatus);
+                    daTCReason.Fill(dsTCReason);
+
+                    if (dsTCReason.Tables[0].Rows.Count > 0 && dsTCReason.Tables[0] != null)
+                    {
+                        DDLeadStatus.DataTextField = "Status1";
+                        //cmbDisposition.DataValueField = "ID";
+                        DDLeadStatus.DataSource = dsTCReason.Tables[0];
+                        DDLeadStatus.DataBind();
+
+                    }
+                    else
+                    {
+                        DDLeadStatus.DataSource = null;
+                        DDLeadStatus.DataBind();
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+    
+    }
+
+    public void GetCity()
+    {
+        txtCity.Items.Clear();
+        try
+        {
+            string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                using (MySqlCommand cmdTCStatus = new MySqlCommand("usp_getcity", con))
+                {
+                    cmdTCStatus.CommandType = CommandType.StoredProcedure;
+
+                    DataSet dsTCReason = new DataSet();
+                    MySqlDataAdapter daTCReason = new MySqlDataAdapter(cmdTCStatus);
+                    daTCReason.Fill(dsTCReason);
+
+                    if (dsTCReason.Tables[0].Rows.Count > 0 && dsTCReason.Tables[0] != null)
+                    {
+                        txtCity.DataTextField = "City_Name";
+                        //cmbDisposition.DataValueField = "ID";
+                        txtCity.DataSource = dsTCReason.Tables[0];
+                        txtCity.DataBind();
+
+                    }
+                    else
+                    {
+                        txtCity.DataSource = null;
+                        txtCity.DataBind();
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+    }
+
+    #region  //Display CRM data
+    public void LOAD_Lead_DUMP9()
+    {
+        try
+        {
+            if (lblServiceID.Text != "0")
+            {
+                string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+                using (MySqlConnection con = new MySqlConnection(constr))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("USP_DISPLAY_DUMP_ALL", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@LEAD_ID", Label1.Text);
+                        cmd.Parameters.AddWithValue("@srv_ID", lblServiceID.Text);
+                        // cmd.Parameters.AddWithValue("@LEAD_ID", 2732);
+                        //cmd.Parameters.AddWithValue("@srv_ID", 18);
+
+
+                        using (MySqlDataAdapter sda = new MySqlDataAdapter(cmd))
+                            con.Open();
+                        using (MySqlDataReader dr = cmd.ExecuteReader())
+                        {
+                            while (dr.Read())
+                            {
+                                lblbatchP.Text = dr["l_batch_name"].ToString();
+                                //txtPhone2.Text = dr["lead_phone2"].ToString();
+                                //txtphonethree.Text = dr["lead_phone3"].ToString();
+                                // txtleadidver.Text = dr["l_ref_id"].ToString();
+                                txtlead_idA.Text = dr["l_ref_id"].ToString();
+
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch
+        { }
+
+    }
+    #endregion
+
+
+    protected void btnDisposeCall_Click(object sender, EventArgs e)
+    {
+        DateTime CurrentDateTime = System.DateTime.Now;
+        DateTime CurrentAppointmentDateAddHour = System.DateTime.Now.AddHours(3);
+        try
+        {
+          System.Threading.Thread.Sleep(2000);
+          if (cmbSubdisposition.Text == "FE Appointment")
+          {
+          if (txtCompany.Text == "")
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Enter company name')</script>");
+              return;
+          }
+
+          if (txtEmail.Text == "")
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Enter Email ID')</script>");
+              return;
+          }
+
+          if (txtCity.Text == "" || txtCity.Text == "Select")
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Select City Name')</script>");
+              return;
+          }
+
+          if (txtState.Text == "" )
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Select City Name')</script>");
+              return;
+          }
+
+          if (txtBranchManager.Text == "")
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Enter Branch manager name')</script>");
+              return;
+          }
+
+          if (txtBranchManagerNumber.Text == "")
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Enter Branch manager number')</script>");
+              return;
+          }
+
+          if (txtPincode.Text == "" || txtPincode.Text == "Select")
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Select Product required')</script>");
+              return;
+          }
+
+          if (txtCust_LoanAmount.Text == "" )
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Enter Loan Amount')</script>");
+              return;
+          }
+
+          if (txtPurposeofLoan.Text == "")
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Select Purpose Of Loan')</script>");
+              return;
+          }
+
+          if (ddlGST.Text == "" || ddlGST.Text == "Select")
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Select GST')</script>");
+              return;
+          }
+
+          if (ddlITR.Text == "" || ddlITR.Text == "Select")
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Select ITR')</script>");
+              return;
+          }
+
+          if (ddlBankStatement.Text == "" || ddlBankStatement.Text == "Select")
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Select Bank Statement')</script>");
+              return;
+          }
+
+          if (txtBussinessVintage.Text == "" )
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Enter Bussiness Vintage')</script>");
+              return;
+          }
+
+          if (txtcibilscore.Text == "" || txtcibilscore.Text == "Select")
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Select Cibil Score')</script>");
+              return;
+          }
+
+          if (txtEmiBounced.Text == "" || txtEmiBounced.Text == "Select")
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Select Emi Bounced Field')</script>");
+              return;
+          }
+
+          if (txtVisitAddress.Text == "")
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Enter Visit Address')</script>");
+              return;
+          }
+
+          if (DDLeadStatus.Text == "" || DDLeadStatus.Text == "Select")
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Select Lead Status')</script>");
+              return;
+          }
+
+          if (DDBranchDispose.Text == "" || DDBranchDispose.Text == "Select")
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Select Branch Dispose')</script>");
+              return;
+          }
+
+          if (txtSubRemarks.Text == "" )
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Enter Sub Remarks')</script>");
+              return;
+          }
+
+          if (txtCust_DisbursementAmount.Text == "")
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Enter Disbursement Amount')</script>");
+              return;
+          }
+
+          if (ddl_Presentation.Text == "" || ddl_Presentation.Text == "Select")
+          {
+              txtCompany.Focus();
+              Response.Write("<script>alert('Please Select Presentation')</script>");
+              return;
+          }
+        }
+          if (cmbDisposition.SelectedItem.Text == "Select" || cmbSubdisposition.SelectedItem.Text == "Select" || drpSusubdisposition.Text == "Select")
+            {
+                cmbDisposition.Focus();
+                Response.Write("<script>alert('Please Select Disposition')</script>");
+                return;
+            }
+            //if (DropProductPitch.Text == "")
+            //{
+            //    Response.Write("<script>alert('Product Pitched should not be blank!!!')</script>");
+            //    return;
+            //}
+
+           
+            if (cmbSubdisposition.SelectedItem.Text == "Appointment" || cmbSubdisposition.SelectedItem.Text == "Refixed Appointment")
+            {
+                //if (txtMeetingAddress.Text.Trim() == "")
+                //{
+                //    Response.Write("<script>alert('Meeting Address should not be blank')</script>");
+                //    return;
+                //}
+                //if (ddlStateName.Text.Trim() == "")
+                //{
+                //    Response.Write("<script>alert('Meeting State should not be blank')</script>");
+                //    return;
+                //}
+
+                //if (ddlStateName.SelectedItem.Text == "")
+                //{
+                //    Response.Write("<script>alert('Meeting State should not be blank')</script>");
+                //    return;
+                //}
+                //if (ddlMeetingCity.SelectedItem.Text == "")
+                //{
+                //    Response.Write("<script>alert('Meeting City should not be blank')</script>");
+                //    return;
+                //}
+                //if (txtMeetingPincode.Text.Trim() == "")
+                //{
+
+                //    Response.Write("<script>alert('Meeting Pincode should not be blank')</script>");
+                //    return;
+                //}
+                //if (txtMeetingLandmark.Text.Trim() == "")
+                //{
+                //    Response.Write("<script>alert('Meeting Landmark should not be blank')</script>");
+                //    return;
+                //}
+                
+
+                //if (txtMeetingPincode.Text!="")
+                //{
+                //   GetMeetingPincode();
+                //   if (txtMeetingPincode.BackColor == Color.Red)
+                //    {
+                //    Response.Write("<script>alert('Meeting PinCode is not Servicable!!!')</script>");
+                //    return;
+                //    }
+
+                // }
+
+
+
+                try
+                {
+                  //  int Timeonly = dtpAppointmentDateTime.SelectedDate.Value.Hour;
+                    //   int minute = RadAppointment.SelectedDate.Value.Minute;
+                    //txtFirstName.Text = Timeonly.ToString();
+                    //if (Timeonly < 10)
+                    //{
+                    //    Response.Write("<script>alert('appointment should not be less than 10:00 AM ')</script>");
+                    //    return;
+                    //}
+
+
+                    //if (Timeonly >= 19)
+                    //{
+                    //    Response.Write("<script>alert('appointment should not be greter than 07:00 PM ')</script>");
+                    //    return;
+                    //}
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            if (lblDispcodeValue.Text == "CCA" || lblDispcodeValue.Text == "CCAL" || lblDispcodeValue.Text == "CFO" || lblDispcodeValue.Text == "CCALL" || lblDispcodeValue.Text == "CCAS" || lblDispcodeValue.Text == "CDIS" || lblDispcodeValue.Text == "CME")
+{
+
+	if (Radcallback.SelectedDate < System.DateTime.Now || Radcallback.SelectedDate== null )
+            {
+                Response.Write("<script>alert('Please select above current date')</script>");
+                return;
+            }
+}
+            if (txtTSRRemarks.Text == "")
+            {
+                Response.Write("<script>alert('Agent remarks should not be blank!!!')</script>");
+                return;
+            }
+
+           
+
+
+            SaveData();
+            clearFields();
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+    }
+
+    private void SaveData()
+    {
+        string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+        using (MySqlConnection con = new MySqlConnection(constr))
+        {
+            using (MySqlCommand cmd = new MySqlCommand("usp_save_data_new2", con))
+            {
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@p_lead_id", txtlead_idA.Text);
+                cmd.Parameters.AddWithValue("@p_batch_name", lblbatchP.Text);
+                cmd.Parameters.AddWithValue("@p_call_back", Radcallback.SelectedDate);
+                cmd.Parameters.AddWithValue("@p_disposition", cmbDisposition.Text);
+                cmd.Parameters.AddWithValue("@p_subdisposition", cmbSubdisposition.Text);
+                cmd.Parameters.AddWithValue("@p_subsubdisposition", drpSusubdisposition.Text);
+                cmd.Parameters.AddWithValue("@p_remarks", txtTSRRemarks.Text);
+                cmd.Parameters.AddWithValue("@p_agentid", Label4.Text);
+                cmd.Parameters.AddWithValue("@p_agentname", Label4.Text);
+                cmd.Parameters.AddWithValue("@p_mobileA", txtphoneP.Text);  
+                cmd.Parameters.AddWithValue("@p_nameA", txtNameA.Text);
+                cmd.Parameters.AddWithValue("@p_companyA", txtCompanyA.Text);
+                cmd.Parameters.AddWithValue("@p_emailA", txtEmailA.Text);
+                cmd.Parameters.AddWithValue("@p_categoryA", txtCategoryA.Text);
+                cmd.Parameters.AddWithValue("@p_cityA", txtCityA.Text);
+                cmd.Parameters.AddWithValue("@p_stateA", txtStateA.Text);
+                cmd.Parameters.AddWithValue("@P_CityBranch", txtCity.Text);
+                cmd.Parameters.AddWithValue("@P_Mobile1", txtMobile.Text);
+              //  cmd.Parameters.AddWithValue("@P_Mobile1", txtMobile.Text);
+                cmd.Parameters.AddWithValue("@P_StateBranch", txtStateA.Text);
+                cmd.Parameters.AddWithValue("@P_ManagerBranch", txtBranchManager.Text);
+                cmd.Parameters.AddWithValue("@P_ManagerBranchNumber", txtBranchManagerNumber.Text);
+                //cmd.Parameters.AddWithValue("@p_pincodeA", txtPincodeA.Text);
+                //cmd.Parameters.AddWithValue("@p_source", txtSource.Text);
+                //cmd.Parameters.AddWithValue("@p_campiagn", txtCampaign.Text);
+                //cmd.Parameters.AddWithValue("@p_loan_amount", txtLoanAmount.Text);
+                //cmd.Parameters.AddWithValue("@p_disbursement_amount", txtDisbursementAmount.Text);
+                //cmd.Parameters.AddWithValue("@p_product", txtProduct.Text);
+                
+                cmd.Parameters.AddWithValue("@p_mobile", txtphoneP.Text);
+                cmd.Parameters.AddWithValue("@p_name", txtName.Text);
+                cmd.Parameters.AddWithValue("@p_company", txtCompany.Text);
+                cmd.Parameters.AddWithValue("@p_email", txtEmail.Text);
+              //  cmd.Parameters.AddWithValue("@p_category", txtCategory.Text);
+                cmd.Parameters.AddWithValue("@p_city", txtCity.Text);
+                cmd.Parameters.AddWithValue("@p_state", txtState.Text);
+                cmd.Parameters.AddWithValue("@p_pincode", txtPincode.Text);
+                cmd.Parameters.AddWithValue("@p_GST", ddlGST.Text);
+                cmd.Parameters.AddWithValue("@p_ITR", ddlITR.Text);
+                cmd.Parameters.AddWithValue("@p_bankstatement", ddlBankStatement.Text);
+                cmd.Parameters.AddWithValue("@p_businessvintage", txtBussinessVintage.Text);
+                //cmd.Parameters.AddWithValue("@p_annualincome", txtAnnualIncome.Text);
+                cmd.Parameters.AddWithValue("@P_PurposeOfLoan", txtPurposeofLoan.Text);
+                cmd.Parameters.AddWithValue("@P_CibilScore", txtcibilscore.Text);
+                cmd.Parameters.AddWithValue("@P_EmiBounced", txtEmiBounced.Text);
+                cmd.Parameters.AddWithValue("@P_AppointmentDateTime", DTAppointmentDate.SelectedDate);
+                cmd.Parameters.AddWithValue("@P_VisitAddress", txtVisitAddress.Text);
+                cmd.Parameters.AddWithValue("@P_LeadStatus", DDLeadStatus.Text);
+                cmd.Parameters.AddWithValue("@P_BranchDispose", DDBranchDispose.Text);
+               // cmd.Parameters.AddWithValue("@P_BranchDispose", DDBranchDispose.Text);
+                //cmd.Parameters.AddWithValue("@p_currentresidential", txtCurrentResidential.Text);
+                //cmd.Parameters.AddWithValue("@p_cust_source", txtCust_Source.Text);
+                //cmd.Parameters.AddWithValue("@p_cust_campaign", txtCust_Campaign.Text);
+                cmd.Parameters.AddWithValue("@p_cust_loan_amount", txtCust_LoanAmount.Text);  
+                //cmd.Parameters.AddWithValue("@p_cust_loan_amount", txtCust_LoanAmount.Text);
+                //cmd.Parameters.AddWithValue("@P_SubRemarks", txtSubRemarks.Text);
+                cmd.Parameters.AddWithValue("@P_SubRemarks", txtSubRemarks.Text);
+
+                cmd.Parameters.AddWithValue("@P_DisbursementAmount", txtCust_DisbursementAmount.Text);
+                cmd.Parameters.AddWithValue("@P_Presentation", ddl_Presentation.Text);
+                //cmd.Parameters.AddWithValue("@P_ManagerBranchNumber", txtBranchManagerNumber.Text);
+                
+                //cmd.Parameters.AddWithValue("@p_cust_product", txtCust_Product.Text);
+                //cmd.Parameters.AddWithValue("@p_cust_presentation", ddlCust_Presentation.Text);
+                con.Open();
+                int i = cmd.ExecuteNonQuery();
+                con.Close();
+                Response.Write("<script>alert('Data Submitted')</script>");
+            }
+        }
+        #region OG Code 2020-10-07
+        //DateTime dt2, dt3;
+        //string dtm2 = "";
+        //string dtm3 = "";
+
+        ////  string str1 = "http://172.16.0.82:9899/?reqtype=closecall&user=" + lblagentP.Text + "&disposition=" + cmbtcreason.SelectedValue + "&callnumber=" + Label2.Text + "&remarks=" + txtCustomerRemarks.Text + "&cbkdate=" + dtm2 + "&main_dispstn_code=" + cmbtcreason.SelectedValue + "&sub_dispstn_code=" + cmbtcreason.SelectedValue + "&host=0.0.0.0";
+
+        //string str1 = "http://172.16.0.82:9899/?reqtype=closecall&user=" + Label4.Text + "&disposition=" + cmbDisposition.SelectedValue + "&callnumber=" + Label2.Text + "&remarks=" + txtTSRRemarks.Text + "&cbkdate=" + dtm2 + "&main_dispstn_code=" + cmbDisposition.SelectedValue + "&sub_dispstn_code=" + cmbSubdisposition.SelectedValue + "&host=0.0.0.0";
+        //var request = (HttpWebRequest)WebRequest.Create(str1);
+        //var response = (HttpWebResponse)request.GetResponse();
+        //var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+        //txtTSRRemarks.Text = str1.ToString();
+        #endregion
+
+        DateTime dt2, dt3;
+        string dtm2 = "";
+        string dtm3 = "";
+
+        DateTime dt7;
+        string dt8 = "";
+        string dt9 = "";
+        //  string str1 = "";
+        //dt7 = Convert.ToDateTime(RadPTPDate.SelectedDate.ToString());
+        try
+        {
+            dt7 = Convert.ToDateTime(Radcallback.SelectedDate.ToString());
+            dt8 = dt7.ToString("yyyy-MM-dd HH:mm:ss");
+        }
+        catch
+        {
+        }
+
+        string str1 = "";
+
+        //// string str1 = "http://172.16.0.28:9090/IDG?cmd=AGENTCLOSECALL&" + strdispcodevaluesP.Value + "&" + dtpCallbackDate.SelectedDate + "&" + txtleadID.Text + "&" + txtRemarks.Text + "&" + lblCALLNUM.Text + "&" + strHost + "&";
+        if (lblDispcodeValue.Text == "CCA" || lblDispcodeValue.Text == "CCAL" || lblDispcodeValue.Text == "CFO" || lblDispcodeValue.Text == "CCALL")
+        {
+            str1 = "http://172.16.0.28:9899/?reqtype=closecall&user=" + lblagentP.Text + "&disposition=" + lblDispcodeValue.Text + "&callnumber=" + Label2.Text + "&remarks=" + txtTSRRemarks.Text + "&cbkdate=" + dt8 + "&main_dispstn_code=" + lblDispcodeValue.Text + "&sub_dispstn_code=" + lblDispcodeValue.Text + " &host=" + MYIP + "";
+        }
+        else
+        {
+            str1 = "http://172.16.0.28:9899/?reqtype=closecall&user=" + lblagentP.Text + "&disposition=" + lblDispcodeValue.Text + "&callnumber=" + Label2.Text + "&remarks=" + txtTSRRemarks.Text + "&cbkdate=" + dtm2 + "&main_dispstn_code=" + lblDispcodeValue.Text + "&sub_dispstn_code=" + lblDispcodeValue.Text + " &host=" + MYIP + "";
+        }
+        var request = (HttpWebRequest)WebRequest.Create(str1);
+       // txtTSRRemarks.Text = str1;
+
+        var response = (HttpWebResponse)request.GetResponse();
+
+        var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+    }
+
+
+    // dt9 = dt7.ToString("yyyy-MM-dd");
+    //dt8 = dt9 + " 00:00:00";
+    // string concatdisp = cmbDisposition.SelectedItem.Text + "^" + cmbSubdisposition.SelectedItem.Text;
+    //string str2 = "http://172.16.0.82:9898?reqtype=setcallmastervalue&user=" + Label4.Text + "&param=disp_level2&value=" + TextBox2.Text + "%5" + TextBox3.Text + "&refid=" + TextBox4.Text + "&sid=" + TextBox5.Text + "&callnumber=" + TextBox6.Text + "";
+
+    //string str1 = "http://172.16.0.82:9899/?reqtype=closecall&user=" + lblagentP.Text + "&disposition=" + cmbtcreason.SelectedValue + "&callnumber=" + Label2.Text + "&remarks=" + txtCustomerRemarks.Text + "&cbkdate=" + dtm2 + "&main_dispstn_code=" + cmbtcreason.SelectedValue + "&sub_dispstn_code=" + cmbtcreason.SelectedValue + "&host=0.0.0.0";
+
+    //HangUpP.Text = concatdisp;
+
+
+    //str1 = "http://172.16.0.82:9899/?reqtype=closecall&user=" + Label4.Text + "&disposition=" + lblDispcodeValue.Text + "&callnumber=" + Label2.Text + "&remarks=" + txtTSRRemarks.Text + "&cbkdate=" + dtm2 + "&main_dispstn_code=" + lblDispcodeValue.Text + "&sub_dispstn_code=" + lblDispcodeValue.Text + "&host=0.0.0.0";
+
+
+
+
+    // string BeforeCloseCall = "http://172.16.0.82:9899/?reqtype=setcallmastervalue&user=" + Label4.Text + "&param=disp_level2&value=" + concatdisp + "&refid=" + txtlead_idA.Text + "&sid=" + lblServiceID.Text + "&callnumber=" + Label2.Text + "";
+    //  var requestBeforeCloseCall = (HttpWebRequest)WebRequest.Create(BeforeCloseCall);
+
+    // var responseBeforeCloseCall = (HttpWebResponse)requestBeforeCloseCall.GetResponse();
+
+    //  var responseStringBeforeCloseCall = new StreamReader(responseBeforeCloseCall.GetResponseStream()).ReadToEnd();
+    //txtBeforeCloseCall.Text = BeforeCloseCall;
+
+
+    // if (lblDispcodeValue.Text == "CCA" || lblDispcodeValue.Text == "CCAL" || lblDispcodeValue.Text == "CFO")
+    // {
+    //    str1 = "http://172.16.0.82:9899/?reqtype=closecall&user=" + Label4.Text + "&disposition=" + lblDispcodeValue.Text + "&callnumber=" + Label2.Text + "&remarks=" + txtTSRRemarks.Text + "&cbkdate=" + dt8 + "&main_dispstn_code=" + lblDispcodeValue.Text + "&sub_dispstn_code=" + lblDispcodeValue.Text + "&host=0.0.0.0";
+    // }
+    // else
+    // {
+    //    str1 = "http://172.16.0.82:9899/?reqtype=closecall&user=" + Label4.Text + "&disposition=" + lblDispcodeValue.Text + "&callnumber=" + Label2.Text + "&remarks=" + txtTSRRemarks.Text + "&cbkdate=" + dtm2 + "&main_dispstn_code=" + lblDispcodeValue.Text + "&sub_dispstn_code=" + lblDispcodeValue.Text + "&host=0.0.0.0";
+    //   }
+    //////txtTSRRemarks.Text = str1;
+    //    var request = (HttpWebRequest)WebRequest.Create(str1);
+
+    //    var response = (HttpWebResponse)request.GetResponse();
+
+    //  var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+    //txtTSRRemarks.Text = str1;
+
+    public void clearFields()
+    {
+        txtNameA.Text = "";
+        txtName.Text = "";
+        txtMobileA.Text = "";
+        txtMobile.Text = "";
+        txtCompanyA.Text = "";
+        txtCompany.Text = "";
+        txtEmailA.Text = "";
+        txtEmail.Text = "";
+        txtCategoryA.Text = "";
+       // txtCategory.Text = "";
+        txtCityA.Text = "";
+        txtCity.SelectedItem.Text = "";
+        txtStateA.Text = "";
+        txtState.Text = "";
+     //   txtPincodeA.Text = "";
+        txtPincode.Text = "";
+       // txtAnnualIncome.Text = "";
+        //txtSource.Text = "";
+        //txtCampaign.Text = "";
+        //txtLoanAmount.Text = "";
+        //txtDisbursementAmount.Text = "";
+        //txtProduct.Text = "";
+        //txtCust_Source.Text = "";
+        //txtCust_Campaign.Text = "";
+        txtCust_LoanAmount.Text = "";
+        txtCust_DisbursementAmount.Text = "";
+       // txtCust_Product.Text = ""; 
+
+        cmbDisposition.SelectedIndex = -1;
+        cmbSubdisposition.SelectedIndex = -1;
+        txtTSRRemarks.Text = "";
+        Radcallback.Clear();
+        Radcallback.Enabled = false;
+        drpSusubdisposition.SelectedIndex = -1;
+        txtphonePMasking.Text = "";
+
+        //ClearSession();
+    }
+    private void ClearSession()
+    {
+        try
+        {
+            Session["txtCustomerId"] = null;
+            Session["txtPolicyNo"] = null;
+            Session["txtFirstName"] = null;
+            Session["txtLastName"] = null;
+            Session["txtAddress"] = null;
+            Session["txtPin_Code"] = null;
+            Session["txtCustomerCity"] = null;
+            Session["txtLoyaltyCity"] = null;
+            Session["txtMobileNo"] = null;
+            Session["txtPhone1"] = null;
+            Session["txtPhone2"] = null;
+            Session["txtDateofBirth"] = null;
+            Session["txtGender"] = null;
+            Session["txtMaritalStatus"] = null;
+            Session["txtOccupationCodeDesc"] = null;
+            Session["txtAge"] = null;
+            Session["txtAgeBand"] = null;
+            Session["txtInforcePlusPaidUp"] = null;
+            Session["txtCallafter"] = null;
+            Session["txtTop3ProductGroupstopitch"] = null;
+            Session["txtL_Top3Products1"] = null;
+            Session["txtL_Top3Products2"] = null;
+            Session["txtTradSavingDecile"] = null;
+            Session["txtNDNCPrimaryContactNo"] = null;
+            Session["txtIssuanceDate"] = null;
+            Session["txtCommencementDate"] = null;
+            Session["txtPolicyName"] = null;
+            Session["txtTotalSumAssured"] = null;
+            Session["txtPremium"] = null;
+            Session["txtTotalPremium"] = null;
+            Session["txtEPI"] = null;
+            Session["txtRiskCessationTerm"] = null;
+            Session["txtPremiumCessationTerm"] = null;
+            Session["txtBillingFrequency"] = null;
+            Session["txtPolicyStatus"] = null;
+            Session["txtPaidtoDate(PTD)"] = null;
+            Session["txtAgentNo"] = null;
+            Session["txtAgentName"] = null;
+            Session["txtAgentType"] = null;
+            Session["txtBranchName"] = null;
+            Session["txtChannel"] = null;
+            Session["txtSUB_CHANNEL"] = null;
+            Session["txtTmName"] = null;
+            Session["txtAvpName"] = null;
+            Session["txtPaymentChannel"] = null;
+            Session["txtFundValue"] = null;
+            Session["txtIncome"] = null;
+            Session["txtLGCODE"] = null;
+            Session["txtHDFCBankCustomer(10)"] = null;
+            Session["txtFLSCode"] = null;
+            Session["txtFLSName"] = null;
+            Session["txtTerminationdate"] = null;
+            Session["txtlocation"] = null;
+            Session["txtFUND01_Desc"] = null;
+            Session["txtFUND02_Desc"] = null;
+            Session["txtFUND03_Desc"] = null;
+            Session["txtFUND04_Desc"] = null;
+            Session["txtFUND05_Desc"] = null;
+            Session["txtFUND06_Desc"] = null;
+            Session["txtFUND07_Desc"] = null;
+            Session["txtFUND08_Desc"] = null;
+            Session["txtFUND09_Desc"] = null;
+            Session["txtFUND10_Desc"] = null;
+            Session["txtPERC_AMT01"] = null;
+            Session["txtPERC_AMT02"] = null;
+            Session["txtPERC_AMT03"] = null;
+            Session["txtPERC_AMT04"] = null;
+            Session["txtPERC_AMT05"] = null;
+            Session["txtPERC_AMT06"] = null;
+            Session["txtPERC_AMT07"] = null;
+            Session["txtPERC_AMT08"] = null;
+            Session["txtPERC_AMT09"] = null;
+            Session["txtPERC_AMT10"] = null;
+            Session["txtProduct"] = null;
+            Session["txtdatastatus"] = null;
+            Session["txtCamp_Name"] = null;
+            Session["txtFinal_Camp"] = null;
+            Session["txtDNC_Status"] = null;
+            Session["txtBANCA_Status"] = null;
+            Session["txtDSC_Status"] = null;
+            Session["txtLotStatus"] = null;
+            Session["txtMobileStatus"] = null;
+            Session["txtDNC1"] = null;
+            Session["txtDNC2"] = null;
+            Session["txtDNC3"] = null;
+            Session["txtDup_On_ConctactNo"] = null;
+            Session["txtDup_On_Lead_Contact"] = null;
+            Session["txtData_Part"] = null;
+            Session["txtPlanName"] = null;
+            Session["txtEPI_Status"] = null;
+            Session["txtLoyaltySegment"] = null;
+            Session["txtFundValue_Banding"] = null;
+            Session["txtEPI_Banding"] = null;
+            Session["txtConvUL"] = null;
+            Session["txtProduct_Code"] = null;
+            Session["txtProduct_Category"] = null;
+            Session["txtIssuance_Date_Bucket"] = null;
+            Session["txtIRRPercentage"] = null;
+            Session["txtDSC_CAMP"] = null;
+            Session["txtFund01"] = null;
+            Session["txtFund02"] = null;
+            Session["txtFund03"] = null;
+            Session["txtFund04"] = null;
+            Session["txtFund05"] = null;
+            Session["txtFund06"] = null;
+            Session["txtFund07"] = null;
+            Session["txtFund08"] = null;
+            Session["txtFund09"] = null;
+            Session["txtFund10"] = null;
+            Session["txtEquity"] = null;
+            Session["txtBalanced"] = null;
+            Session["txtDebt"] = null;
+            Session["txtCamp_Status"] = null;
+            Session["txtBatchid"] = null;
+            Session["txtUpload_date"] = null;
+            Session["txtNotes"] = null;
+            Session["txtAltNumber"] = null;
+
+        }
+        catch
+        {
+        }
+    }
+    protected void SHOWDATA()
+    {
+
+        string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+        using (MySqlConnection con = new MySqlConnection(constr))
+        {
+            using (MySqlCommand cmd = new MySqlCommand("usp_show_data", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+              cmd.Parameters.AddWithValue("@p_lead_id", txtlead_idA.Text);
+             //  cmd.Parameters.AddWithValue("@p_lead_id", "1");
+
+                using (MySqlDataAdapter sda = new MySqlDataAdapter(cmd))
+                    con.Open();
+                using (MySqlDataReader dr = cmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        txtlead_idA.Text = dr["lead_id"].ToString();
+                        lblbatchP.Text = dr["batch_name"].ToString();
+                        txtMobileA.Text = dr["mobile"].ToString();
+                        txtphoneP.Text = dr["mobile"].ToString();
+                        txtNameA.Text = dr["name"].ToString();
+                        txtCompanyA.Text = dr["company"].ToString();
+                        txtEmailA.Text = dr["email"].ToString();
+                        txtCategoryA.Text = dr["category"].ToString();
+                        txtCityA.Text = dr["city"].ToString();
+                        txtStateA.Text = dr["state"].ToString();
+                        txtName.Text = dr["name"].ToString();
+ 		            	txtBussinessVintage.Text = dr["business_vintage"].ToString();
+                       // txtAnnualIncome.Text = dr["annual_income"].ToString();
+                     //   txtCurrentResidential.Text = dr["current_residential"].ToString();
+                        txtMobile.Text = dr["mobile"].ToString();
+                        //txtCampaign.Text = dr["campaign"].ToString();
+                        //txtLoanAmount.Text = dr["loan_amount"].ToString();
+                        //txtDisbursementAmount.Text = dr["disbursement_amount"].ToString();
+                        //txtProduct.Text = dr["product"].ToString();
+                        //txtCust_Source.Text = dr["cust_source"].ToString();
+                        //txtCust_Campaign.Text = dr["cust_campaign"].ToString();
+                        txtMobile.Text = dr["mobile"].ToString();
+                        txtCompany.Text = dr["cust_company"].ToString();
+                        txtEmail.Text = dr["cust_email"].ToString();
+                        txtName.Text = dr["name"].ToString();
+                        txtCity.Text = dr["cust_city"].ToString();
+                        txtState.Text = dr["customer_state"].ToString();
+                  
+                        //    txtCust_Product.Text = dr["cust_product"].ToString(); P_Presentation
+                        //ddl_Presentation.Text = dr["P_Presentation"].ToString();
+                    }
+                }
+            }
+        }
+        ApplyMasking(txtphoneP.Text);
+        ApplyMasking1(txtMobileA.Text);
+    }
+
+    protected void SHOWDATA1()
+    {
+
+        string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+        using (MySqlConnection con = new MySqlConnection(constr))
+        {
+            using (MySqlCommand cmd = new MySqlCommand("usp_getstate", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@P_City_Name", txtCity.Text);
+             //   cmd.Parameters.AddWithValue("@P_City_Name", "1");
+
+                using (MySqlDataAdapter sda = new MySqlDataAdapter(cmd))
+                    con.Open();
+                using (MySqlDataReader dr = cmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        txtState.Text = dr["State"].ToString();
+                        txtBranchManager.Text = dr["Branch_Manager"].ToString();
+                        txtBranchManagerNumber.Text = dr["Branch_Manager_Number"].ToString();
+                        //txtphoneP.Text = dr["mobile"].ToString();
+                        //txtNameA.Text = dr["name"].ToString();
+                        //txtCompanyA.Text = dr["company"].ToString();
+                        //txtEmailA.Text = dr["email"].ToString();
+                        //txtCategoryA.Text = dr["category"].ToString();
+                        //txtCityA.Text = dr["city"].ToString();
+                        //txtStateA.Text = dr["state"].ToString();
+                        //txtName.Text = dr["name"].ToString();
+                        //txtBussinessVintage.Text = dr["business_vintage"].ToString();
+                        //txtAnnualIncome.Text = dr["annual_income"].ToString();
+                        ////   txtCurrentResidential.Text = dr["current_residential"].ToString();
+                        //txtMobile.Text = dr["mobile"].ToString();
+                        ////txtCampaign.Text = dr["campaign"].ToString();
+                        ////txtLoanAmount.Text = dr["loan_amount"].ToString();
+                        ////txtDisbursementAmount.Text = dr["disbursement_amount"].ToString();
+                        ////txtProduct.Text = dr["product"].ToString();
+                        ////txtCust_Source.Text = dr["cust_source"].ToString();
+                        ////txtCust_Campaign.Text = dr["cust_campaign"].ToString();
+                        //txtMobile.Text = dr["cust_mobile"].ToString();
+                        //txtCompany.Text = dr["cust_company"].ToString();
+                        //txtEmail.Text = dr["cust_email"].ToString();
+                        //txtName.Text = dr["cust_name"].ToString();
+                        //txtCity.Text = dr["cust_city"].ToString();
+                        //txtState.Text = dr["customer_state"].ToString();
+                        ////    txtCust_Product.Text = dr["cust_product"].ToString();
+
+                    }
+                }
+            }
+        }
+        ApplyMasking(txtphoneP.Text);
+     
+    }
+
+    protected void ManualSearchLeadId(string SearchManualLeadId)
+    {
+
+        string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+        using (MySqlConnection con = new MySqlConnection(constr))
+        {
+            using (MySqlCommand cmd = new MySqlCommand("USP_ManualSearchLeadId_New", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@P_Lead_Id", SearchManualLeadId.ToString());
+                //cmd.Parameters.AddWithValue("@P_Lead_Id", "1");
+
+                using (MySqlDataAdapter sda = new MySqlDataAdapter(cmd))
+                    con.Open();
+                using (MySqlDataReader dr = cmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        txtlead_idA.Text = SearchManualLeadId.ToString();
+                        hfvtxtlead_idA.Value = SearchManualLeadId.ToString();
+                        Session["sessionLeadId"] = SearchManualLeadId.ToString();
+                        sessionLabel.Text = Session["sessionLeadId"].ToString();
+                        //txtMeetingAddress.Text = dr["MeetingAddress"].ToString();
+                        //txtMeetingLandmark.Text = dr["MeetingLandmark"].ToString();
+                    ///    txtCustomerType.Text = dr["CustomerType"].ToString();
+                       // ddlStateName.Text = dr["MeetingState"].ToString();
+                       // ddlMeetingCity.Text = dr["MeetingCity"].ToString();
+                        ////txtMeetingPincode.Text = dr["MeetingPincode"].ToString();
+                        ////txtCampaign.Text = dr["Campaign"].ToString();
+                        ////txtScripttouse.Text = dr["ScriptToUse"].ToString();
+                        //txtOccupation.Text = dr["Occupation"].ToString();
+                        //txtQualification.Text = dr["Qualification"].ToString();
+                        //txtIncomePA.Text = dr["Income_PA"].ToString();
+                        //txtNoOfChildren.Text = dr["NoOfChildren"].ToString();
+                        //DropProductPitch.Text = dr["ProductPitched"].ToString();
+                        ////ApplyMasking(txtphoneP.Text, txtTelno1.Text, txtTelno2.Text);
+                    }
+                }
+            }
+        }
+    }
+
+    private void ApplyMasking(string txtphonePMasking1)
+    {
+        try
+        {
+            if (txtphonePMasking1 != "")
+            {
+                txtphonePMasking.Text = "*****" + txtphonePMasking1.Substring(txtphonePMasking1.Length - 5, 5);
+            }
+           
+           
+        }
+        catch
+        {
+        }
+    }
+
+    private void ApplyMasking1(string txtphonePMasking11)
+    {
+        try
+        {
+            if (txtphonePMasking11 != "")
+            {
+                txtMobileMask.Text = "*****" + txtphonePMasking11.Substring(txtphonePMasking11.Length - 5, 5);
+            }
+
+
+        }
+        catch
+        {
+        }
+    }
+
+    protected void HangUpP_Click(object sender, EventArgs e)
+    {
+        string str1 = "http://172.16.0.28:9899/?reqtype=hangupcall&user=" + Label4.Text + "&host=" + MYIP + "";
+
+        var request = (HttpWebRequest)WebRequest.Create(str1);
+
+        var response = (HttpWebResponse)request.GetResponse();
+
+        var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+
+    }
+    protected void DialP_Click(object sender, EventArgs e)
+    {
+        string str1 = "http://172.16.0.28:9899/?reqtype=closendial&user=" + lblagentP.Text + "&disposition=CDC&callnumber=" + Label2.Text + "&remarks=calldisconnected&cbkdate=&maindisp=12345654&subdisp=0&num=" + txtphoneP.Text + "&lrefid=" + txtlead_idA.Text + "&dialindex=2&host=" + MYIP + "";
+
+        var request = (HttpWebRequest)WebRequest.Create(str1);
+
+        var response = (HttpWebResponse)request.GetResponse();
+
+        var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+    }
+    protected void HoldP_Click(object sender, EventArgs e)
+    {
+
+        if (HoldP.Text == "Hold")
+        {
+            //string str1 = "http://172.16.0.82:9899/?reqtype=hold_start&user=" + lblagentP.Text + "&host=" + MYIP + "&callnumber=" + Label2.Text + "";
+            string str1 = "http://172.16.0.82:9899/?reqtype=hold_start&user=" + Label4.Text + "&host=" + MYIP + "&callnumber=" + Label2.Text + "";
+
+            var request = (HttpWebRequest)WebRequest.Create(str1);
+
+            var response = (HttpWebResponse)request.GetResponse();
+
+            var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            HoldP.Text = "Unhold";
+            return;
+        }
+        if (HoldP.Text == "Unhold")
+        {
+
+            string str1 = "http://172.16.0.82:9899/?reqtype=hold_stop&user=" + lblagentP.Text + "&host=" + MYIP + "&callnumber=" + Label2.Text + "";
+
+            var request = (HttpWebRequest)WebRequest.Create(str1);
+
+            var response = (HttpWebResponse)request.GetResponse();
+
+            var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            HoldP.Text = "Hold";
+            return;
+
+        }
+
+    }
+
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        //if (txtManualSearchLeadId.Text != "")
+        //{
+        //    ManualSearchLeadId(txtManualSearchLeadId.Text);
+        //    SHOWDATA();
+        //}
+
+    }
+    protected void btnAlternateNo_Click(object sender, EventArgs e)
+    {
+
+        //string str1 = "http://172.16.0.82:9899/?reqtype=closendial&user=" + lblagentP.Text + "&disposition=CDC&callnumber=" + Label2.Text + "&remarks=calldisconnected&cbkdate=&maindisp=12345654&subdisp=0 &num=" + txtAlternateNo.Text + "&lrefid=" + txtlead_idA.Text + "&dialindex=2&host=" + MYIP + "";
+        string str1 = "http://172.16.0.82:9899/?reqtype=closendial&user=" + Label4.Text + "&disposition=CDC&callnumber=" + Label2.Text + "&remarks=calldisconnected&cbkdate=&maindisp=12345654&subdisp=0 &num=" + txtAlternateNo.Text + "&lrefid=" + txtlead_idA.Text + "&dialindex=2&host=" + MYIP + "";
+
+        var request = (HttpWebRequest)WebRequest.Create(str1);
+
+        var response = (HttpWebResponse)request.GetResponse();
+
+        var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+
+
+    }
+
+    protected void btnMobileDial_Click(object sender, EventArgs e)
+    {
+
+        //string str1 = "http://172.16.0.82:9899/?reqtype=closendial&user=" + lblagentP.Text + "&disposition=CDC&callnumber=" + Label2.Text + "&remarks=calldisconnected&cbkdate=&maindisp=12345654&subdisp=0 &num=" + txtMobileNo_Disp.Text + "&lrefid=" + txtlead_idA.Text + "&dialindex=2&host=" + MYIP + "";
+
+        //var request = (HttpWebRequest)WebRequest.Create(str1);
+
+        //var response = (HttpWebResponse)request.GetResponse();
+
+        //var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+    }
+    protected void cmbDisposition_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        GetSubdisposition(cmbDisposition.SelectedItem.Text);
+    }
+
+    private void GetSubdisposition(string disposition)
+    {
+        try
+        {
+            string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                using (MySqlCommand cmdTCStatus = new MySqlCommand("usp_getsubsubdisposition", con))
+                {
+                    cmdTCStatus.Parameters.AddWithValue("@p_disposition", disposition);
+                    cmdTCStatus.CommandType = CommandType.StoredProcedure;
+
+                    DataSet dsTCReason = new DataSet();
+                    MySqlDataAdapter daTCReason = new MySqlDataAdapter(cmdTCStatus);
+                    daTCReason.Fill(dsTCReason);
+
+                    if (dsTCReason.Tables[0].Rows.Count > 0 && dsTCReason.Tables[0] != null)
+                    {
+                        cmbSubdisposition.DataTextField = "subsubdisposition";
+                        //cmbDisposition.DataValueField = "ID";
+                        cmbSubdisposition.DataSource = dsTCReason.Tables[0];
+                        cmbSubdisposition.DataBind();
+
+                    }
+                    else
+                    {
+                        cmbSubdisposition.DataSource = null;
+                        cmbSubdisposition.DataBind();
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+    }
+
+    //private void GetSubsubdisposition(string subsubdisposition)
+    //{
+    //    try
+    //    {
+    //        string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+    //        using (MySqlConnection con = new MySqlConnection(constr))
+    //        {
+    //            using (MySqlCommand cmdTCStatus = new MySqlCommand("usp_getdispcode", con))
+    //            {
+    //                cmdTCStatus.Parameters.AddWithValue("@p_subsubdisposition", subsubdisposition);
+    //                cmdTCStatus.CommandType = CommandType.StoredProcedure;
+
+    //                DataSet dsTCReason = new DataSet();
+    //                MySqlDataAdapter daTCReason = new MySqlDataAdapter(cmdTCStatus);
+    //                daTCReason.Fill(dsTCReason);
+
+    //                if (dsTCReason.Tables[0].Rows.Count > 0 && dsTCReason.Tables[0] != null)
+    //                {
+    //                    drpSusubdisposition.DataTextField = "dispcode";
+    //                   // lblDispcodeValue.Text = "dispcode";
+    //                    //cmbDisposition.DataValueField = "ID";
+    //                    drpSusubdisposition.DataSource = dsTCReason.Tables[0];
+    //                    drpSusubdisposition.DataBind();
+
+    //                }
+    //                else
+    //                {
+    //                    drpSusubdisposition.DataSource = null;
+    //                    drpSusubdisposition.DataBind();
+    //                }
+    //            }
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        throw (ex);
+    //    }
+    //}
+    protected void cmbSubdisposition_SelectedIndexChanged(object sender, EventArgs e)
+    {
+       // GetSubsubdisposition(cmbSubdisposition.SelectedItem.Text);
+        GetDispositionCode(cmbSubdisposition.SelectedItem.Text);
+    }
+
+    private void GetDispositionCode(string Subsubdisposition)
+    {
+        try
+        {
+            string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+            // Create ADO.NET objects.
+            MySqlConnection con = new MySqlConnection(constr);
+            MySqlCommand cmd = new MySqlCommand("usp_getdispcode", con);
+            MySqlDataReader r;
+            // Configure command and add parameters.
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@p_subsubdisposition", Subsubdisposition);
+
+            // Execute the command.
+            con.Open();
+            r = cmd.ExecuteReader();
+            while (r.Read())
+            {
+                string Dispcode = r["dispcode"].ToString();
+                lblDispcodeValue.Text = r["dispcode"].ToString();
+                if (lblDispcodeValue.Text == "CCA" || lblDispcodeValue.Text == "CCAL" || lblDispcodeValue.Text == "CFO" || lblDispcodeValue.Text == "CCALL" || lblDispcodeValue.Text == "CCAS" || lblDispcodeValue.Text == "CDIS" || lblDispcodeValue.Text == "CME")
+
+                {
+                    Radcallback.Enabled = true;
+                }
+                else
+                {
+                    Radcallback.Clear();
+                    Radcallback.Enabled = false;
+                }
+                if (cmbSubdisposition.SelectedItem.Text == "Appointment" || cmbSubdisposition.SelectedItem.Text == "Refixed Appointment")
+                {
+                  //  dtpAppointmentDateTime.Enabled = true;
+                }
+                else
+                {
+                  //  dtpAppointmentDateTime.Clear();
+                   // dtpAppointmentDateTime.Enabled = false;
+                }
+                if (cmbSubdisposition.SelectedItem.Text == "Sent To Self Closure")
+                {
+                   // RadCallDateTime.Enabled = true;
+                }
+                else
+                {
+                   // RadCallDateTime.Enabled = false;
+                }
+            }
+            con.Close();
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+    }
+    protected void btnvalidate_Click(object sender, EventArgs e)
+    {
+        GetMeetingPincode();
+
+    }
+
+
+    protected void bnEnglish_Click(object sender, EventArgs e)
+    {
+        //// lblLanguage.Visible = true;
+        //CheckBox1.Visible = true;
+        //CheckBox2.Visible = true;
+        //CheckBox3.Visible = true;
+        //CheckBox4.Visible = true;
+        //CheckBox5.Visible = true;
+        //CheckBox6.Visible = true;
+
+        //// lblHindicall.Visible = false;
+        //CheckBox7.Visible = false;
+        //CheckBox8.Visible = false;
+        //CheckBox9.Visible = false;
+        //CheckBox10.Visible = false;
+        //CheckBox11.Visible = false;
+        //CheckBox12.Visible = false;
+        //btnSubmit.Visible = true;
+        //lblLanguage.Text = "English";
+        //lblchcklist.Text = "ChecklistSubmitted-English";
+        //// lblHindicall.Text = "Hindi Call";
+
+    }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+        //// lblLanguage.Visible = true;
+        //CheckBox7.Visible = true;
+        //CheckBox8.Visible = true;
+        //CheckBox9.Visible = true;
+        //CheckBox10.Visible = true;
+        //CheckBox11.Visible = true;
+        //CheckBox12.Visible = true;
+
+        //// l.Visible = false;
+        //CheckBox1.Visible = false;
+        //CheckBox2.Visible = false;
+        //CheckBox3.Visible = false;
+        //CheckBox4.Visible = false;
+        //CheckBox5.Visible = false;
+        //CheckBox6.Visible = false;
+
+        //btnSubmit.Visible = true;
+        //lblLanguage.Text = "Hindi";
+        //lblchcklist.Text = "ChecklistSubmitted-Hindi";
+    }
+    protected void btnSubmit_Click(object sender, EventArgs e)
+    {
+        //if (lblLanguage.Text == "English" && (CheckBox1.Checked == false || CheckBox2.Checked == false
+        //   || CheckBox3.Checked == false || CheckBox4.Checked == false || CheckBox5.Checked == false || CheckBox6.Checked == false))
+        //{
+        //    Response.Write("<script>alert('Please complete the checklist')</script>");
+
+        //}
+
+
+        //else if (lblLanguage.Text == "Hindi" && (CheckBox7.Checked == false || CheckBox8.Checked == false
+        //  || CheckBox9.Checked == false || CheckBox10.Checked == false || CheckBox11.Checked == false || CheckBox12.Checked == false))
+        //{
+        //    Response.Write("<script>alert('Please complete the checklist')</script>");
+
+        //}
+        //else
+        //{
+
+        //    // Page.ClientScript.RegisterOnSubmitStatement(typeof(Page), "closePage", "window.onunload = CloseWindow();");
+        //  //  SaveDataChklist();
+
+        //    //ScriptManager.RegisterStartupScript(this, this.GetType(), "HidePopup", "$('#ac-wrapper').modal('hide')", true);
+        //    chklistpnl.Visible = false;
+        //    clearFieldschklist();
+        //    // lblchcklist.Text = "ChecklistSubmitted";
+
+
+        //    // Page.Response.Redirect(HttpContext.Current.Request.Url.ToString(), true);
+
+        //}
+    }
+
+    public void clearFieldschklist()
+    {
+        ////radLanguage.ClearSelection();
+        //CheckBox1.Checked = false;
+        //CheckBox2.Checked = false;
+        //CheckBox3.Checked = false;
+        //CheckBox4.Checked = false;
+        //CheckBox5.Checked = false;
+        //CheckBox6.Checked = false;
+        //CheckBox7.Checked = false;
+        //CheckBox8.Checked = false;
+        //CheckBox9.Checked = false;
+        //CheckBox10.Checked = false;
+        //CheckBox11.Checked = false;
+        //CheckBox12.Checked = false;
+        //LabelAgent.Text = "";
+        //Labelleadid.Text = "";
+        //lblcustmer.Text = "";
+        //lblcustlastnam.Text = "";
+
+
+
+    }
+
+    private void SaveDataChklist()
+    {
+
+
+        string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+        using (MySqlConnection con = new MySqlConnection(constr))
+        {
+            using (MySqlCommand cmd = new MySqlCommand("Save_Data_Checklist", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@AgentID", Label4.Text);
+                cmd.Parameters.AddWithValue("@LeadID", txtlead_idA.Text);
+                cmd.Parameters.AddWithValue("@PhoneNo", txtphoneP.Text);
+                //cmd.Parameters.AddWithValue("@Language", lblLanguage.Text);
+                cmd.Parameters.AddWithValue("@IncompleteCall", "No");
+
+
+                con.Open();
+                int i = cmd.ExecuteNonQuery();
+                con.Close();
+
+
+
+            }
+        }
+
+
+
+
+
+    }
+
+    protected void ddlBM_RM_State_SelectedIndexChanged(object sender, EventArgs e)
+    {
+       // GetCity(ddlStateName.Text);
+
+    }
+    private void GetCity(string statename)
+    {
+
+        try
+        {
+            //ddlMeetingCity.SelectedIndex = -1;
+            string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                using (MySqlCommand cmdTCStatus = new MySqlCommand("USP_Citymaster", con))
+                {
+                    cmdTCStatus.Parameters.AddWithValue("@P_Statename", statename);
+                    cmdTCStatus.CommandType = CommandType.StoredProcedure;
+
+                    DataSet dsTCReason = new DataSet();
+                    MySqlDataAdapter daTCReason = new MySqlDataAdapter(cmdTCStatus);
+                    daTCReason.Fill(dsTCReason);
+
+                    if (dsTCReason.Tables[0].Rows.Count > 0 && dsTCReason.Tables[0] != null)
+                    {
+                      //  ddlMeetingCity.DataTextField = "CityName";
+                        //cmbDisposition.DataValueField = "ID";
+                       // ddlMeetingCity.DataSource = dsTCReason.Tables[0];
+                       // ddlMeetingCity.DataBind();
+                        //ddlMeetingCity.Items.Insert(0, new ListItem("--Select city--", "0"));
+
+                    }
+                    else
+                    {
+                       // ddlMeetingCity.DataSource = null;
+                       // ddlMeetingCity.DataBind();
+                    }
+                          
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+    }
+
+    private void Getstate()
+    {
+        try
+        {
+            string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                using (MySqlCommand cmdTCStatus = new MySqlCommand("Usp_StateMaster", con))
+                {
+                    //cmdTCStatus.Parameters.AddWithValue("@P_Statename", statename);
+                    cmdTCStatus.CommandType = CommandType.StoredProcedure;
+
+                    DataSet dsTCReason = new DataSet();
+                    MySqlDataAdapter daTCReason = new MySqlDataAdapter(cmdTCStatus);
+                    daTCReason.Fill(dsTCReason);
+
+                    if (dsTCReason.Tables[0].Rows.Count > 0 && dsTCReason.Tables[0] != null)
+                    {
+                        //ddlStateName.DataTextField = "StateName";
+                        ////cmbDisposition.DataValueField = "ID";
+                        //ddlStateName.DataSource = dsTCReason.Tables[0];
+                        //ddlStateName.DataBind();
+                        //ddlStateName.Items.Insert(0, new ListItem("Select State", "0"));
+
+                    }
+                    else
+                    {
+                        //ddlStateName.DataSource = null;
+                        //ddlStateName.DataBind();
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+    }
+
+
+
+    protected void BtnIncompleteCall_Click(object sender, EventArgs e)
+    {
+
+
+        string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+        using (MySqlConnection con = new MySqlConnection(constr))
+        {
+            using (MySqlCommand cmd = new MySqlCommand("Save_Data_Checklist", con))
+            {
+
+                cmd.CommandType = CommandType.StoredProcedure;
+              //  cmd.Parameters.AddWithValue("@AgentID", LabelAgent.Text);
+              //  cmd.Parameters.AddWithValue("@LeadID", Labelleadid.Text);
+                cmd.Parameters.AddWithValue("@PhoneNo", txtphoneP.Text);
+                cmd.Parameters.AddWithValue("@Language", "NA");
+                cmd.Parameters.AddWithValue("@IncompleteCall", "Yes");
+
+
+                con.Open();
+                int i = cmd.ExecuteNonQuery();
+                con.Close();
+
+
+
+            }
+        }
+
+       // chklistpnl.Visible = false;
+
+        clearFieldschklist();
+       // lblchcklist.Text = "IncompleteCall";
+        // Page.Response.Redirect(HttpContext.Current.Request.Url.ToString(), true);
+    }
+
+    protected void RBAddress_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        ////if (rbAddressType.SelectedItem.Value == "RA")
+        ////    txtMeetingAddress.Text = "H or Flat No:  Bldg. or H Name:  Flr No:  Wing :  Plot or Ward No:  Area:  Rd name: City:    State:    Pin:    LM :";
+        ////else if (rbAddressType.SelectedItem.Value == "OA")
+        ////{
+        ////    txtMeetingAddress.Text = "Office or Shop Name or Office No:  Deport or Ext No: Bldg.Name:  Wings or Block:  Flr no:  Area:  Rd name:    Pin:    LM:";
+        ////}
+        ////else
+        ////{
+        ////    txtMeetingAddress.Text = "";
+        ////}
+    }
+
+
+
+    protected void drpSusubdisposition_SelectedIndexChanged(object sender, EventArgs e)
+    {
+       // GetDispositionCode(drpSusubdisposition.Text);
+    }
+    protected void drpSusubdisposition_TextChanged(object sender, EventArgs e)
+    {
+       // GetDispositionCode(drpSusubdisposition.Text);
+    }
+    protected void DDLeadStatus_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                using (MySqlCommand cmdTCStatus = new MySqlCommand("usp_getStatus2", con))
+                {
+                    cmdTCStatus.Parameters.AddWithValue("@P_Status1", DDLeadStatus.Text);
+                    cmdTCStatus.CommandType = CommandType.StoredProcedure;
+
+                    DataSet dsTCReason = new DataSet();
+                    MySqlDataAdapter daTCReason = new MySqlDataAdapter(cmdTCStatus);
+                    daTCReason.Fill(dsTCReason);
+
+                    if (dsTCReason.Tables[0].Rows.Count > 0 && dsTCReason.Tables[0] != null)
+                    {
+                        DDBranchDispose.DataTextField = "Status2";
+                        //cmbDisposition.DataValueField = "ID";
+                        DDBranchDispose.DataSource = dsTCReason.Tables[0];
+                        DDBranchDispose.DataBind();
+
+                    }
+                    else
+                    {
+                        DDBranchDispose.DataSource = null;
+                        DDBranchDispose.DataBind();
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+    }
+    protected void txtCity_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        SHOWDATA1();
+        //try
+        //{
+        //    string constr = ConfigurationManager.ConnectionStrings["Constring"].ConnectionString;
+        //    using (MySqlConnection con = new MySqlConnection(constr))
+        //    {
+        //        using (MySqlCommand cmdTCStatus = new MySqlCommand("usp_getstate", con))
+        //        {
+        //            cmdTCStatus.Parameters.AddWithValue("@P_City_Name", txtCity.Text);
+        //            cmdTCStatus.CommandType = CommandType.StoredProcedure;
+
+        //            DataSet dsTCReason = new DataSet();
+        //            MySqlDataAdapter daTCReason = new MySqlDataAdapter(cmdTCStatus);
+        //            daTCReason.Fill(dsTCReason);
+
+        //            if (dsTCReason.Tables[0].Rows.Count > 0 && dsTCReason.Tables[0] != null)
+        //            {
+        //                txtState.Text = "State";
+        //                cmbDisposition.DataValueField = "ID";
+        //                txtState.Text = Convert.ToString( dsTCReason.Tables[0]);
+        //                txtState.DataBind();
+
+        //                txtBranchManager.Text = "Branch_Manager";
+        //                cmbDisposition.DataValueField = "ID";
+        //                txtBranchManager.Text = Convert.ToString(dsTCReason.Tables[0]);
+        //                txtBranchManager.DataBind();
+
+        //                txtBranchManagerNumber.Text = "Branch_Manager_Number";
+        //                 //cmbDisposition.DataValueField = "ID";
+        //                //txtBranchManagerNumber.Text = Convert.ToString(dsTCReason.Tables[0]);
+        //               //  txtBranchManagerNumber.DataBind();
+
+        //            }
+        //            else
+        //            {
+        //                txtState.Text = null;
+        //                txtState.DataBind();
+
+        //                txtBranchManager.Text = null;
+        //                txtBranchManager.DataBind();
+
+        //                txtBranchManagerNumber.Text = null;
+        //                txtBranchManagerNumber.DataBind();
+
+
+        //            }
+        //        }
+        //    }
+        //}
+        //catch (Exception ex)
+        //{
+        //    throw (ex);
+        //}
+    }
+   
+}
